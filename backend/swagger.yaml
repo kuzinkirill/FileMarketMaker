@@ -1,0 +1,107 @@
+swagger: "2.0"
+info:
+  title: DataFi
+  description: DataFi
+  version: 1.0.0
+schemes:
+  - http
+host: localhost:9202
+basePath: /api
+paths:
+  /miners:
+    get:
+      produces:
+        - application/json
+      description: test
+      responses:
+        "200":
+          description: 200
+          schema:
+            $ref: '#/definitions/MinersResponse'
+        default:
+          description: error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+      parameters:
+        - name: limit
+          in: query
+          type: number
+          required: true
+          format: int
+        - name: offset
+          in: query
+          required: true
+          type: number
+          format: int
+  /miners/with_stats/{address}:
+      get:
+        produces:
+          - application/json
+        responses:
+          "200":
+            description: 200
+            schema:
+              $ref: '#/definitions/MinerWithStats'
+          default:
+            description: error
+            schema:
+              $ref: '#/definitions/ErrorResponse'
+      parameters:
+        - name: address
+          in: path
+          required: true
+          type: string
+definitions:
+  Miner:
+    type: object
+    properties:
+      id:
+        type: number
+        format: int64
+      address:
+        type: string
+      ownerAddress:
+        type: string
+      workerAddress:
+        type: string
+      beneficiaryAddress:
+        type: string
+      creationTimestamp:
+        type: number
+        format: int64
+  MinerStats:
+    type: object
+    properties:
+      lockedRewards:
+        type: string
+      rewards:
+        type: string
+      blocksMined:
+        type: number
+        format: int64
+  MinerWithStats:
+    type: object
+    properties:
+      miner:
+        $ref: '#/definitions/Miner'
+      stat:
+        $ref: '#/definitions/MinerStats'
+  MinersResponse:
+    type: array
+    items:
+      $ref: '#/definitions/Miner'
+  ErrorResponse:
+    type: object
+    description: Типовая ошибка
+    properties:
+      code:
+        type: integer
+        description: Код ошибки
+      message:
+        type: string
+        description: Сообщение ошибки
+      detail:
+        type: string
+        description: Дополнительные детали
+tags:
+  - name: miner
