@@ -87,7 +87,7 @@ func (s *service) ListenBlockchain() error {
 		case <-time.After(1000 * time.Millisecond):
 			current, err := s.checkBlock(lastBlock)
 			if err != nil {
-				log.Printf("process block failed: %w", err)
+				log.Printf("process block failed: %s", err.Error())
 			}
 			lastBlock = current
 		case <-s.closeCh:
@@ -400,7 +400,6 @@ func (s *service) processLoanMinerWithdrawn(ctx context.Context, tx pgx.Tx, inst
 
 	leftValue := ev.Value
 	for _, v := range deal.MinerVestings {
-		log.Println("how?", v.Value, v.Received)
 		allowed := big.NewInt(0).Sub(v.Value, v.Received)
 		if leftValue.Cmp(allowed) == 1 {
 			v.Received = v.Value

@@ -120,7 +120,7 @@ paths:
           description: Измененная информация о сделке
           schema:
             $ref: "#/definitions/Deal"
-  /miner/withdraw:
+  /miners/withdraw:
     post:
       description: Вывод денег майнера (если его баланс выше, чем нужно обеспечения на весь стейкинг)
       tags:

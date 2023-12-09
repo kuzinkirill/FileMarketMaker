@@ -4,7 +4,6 @@ import (
 	"context"
 	"datafimaker/internal/domain"
 	"fmt"
-	"log"
 	"math/big"
 	"strings"
 
@@ -73,7 +72,6 @@ func (r *postgresRepository) GetDealVestings(ctx context.Context, tx pgx.Tx, dea
 		if !ok {
 			return nil, nil, fmt.Errorf("failed to parse miner vesting received: %s", received)
 		}
-		log.Println("aaaa", v.DealID, v.LockedUntil, v.Value, v.Received)
 		minerVestings = append(minerVestings, v)
 	}
 	rows.Close()
