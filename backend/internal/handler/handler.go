@@ -29,8 +29,16 @@ func New(cfg *config.HandlerConfig, service service.Service) Handler {
 func (h *handler) Init() http.Handler {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/miners/with_stats/{address}", h.handleGetMinerWithStats)
+	router.HandleFunc("/miners/withdraw", h.handleMinersWithdraw)
 	router.HandleFunc("/miners", h.handlerGetMiners)
-	router.HandleFunc("/miner/with_stats/{address}", h.handleGetMinerWithStats)
+	router.HandleFunc("/accounts/{address}", h.handleGetAccount)
+	router.HandleFunc("/deals/create", h.handleCreateDeal)
+	router.HandleFunc("/deals/accept", h.handleAcceptDeal)
+	router.HandleFunc("/deals/claim", h.handleClaimDeal)
+	router.HandleFunc("/deals/cancel", h.handleCancelDeal)
+	router.HandleFunc("/deals/{address}", h.handleGetDealsByAddress)
+	router.HandleFunc("/deals", h.handleGetDeals)
 
 	router.Use(h.corsMiddleware)
 

@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": 9202,
+    "readTimeout": "30s",
+    "writeTimeout": "30s",
+    "maxHeaderBytes": 1024
+  },
+  "handler": {
+    "requestTimeout": "5s",
+    "swaggerHost": "*"
+  },
+  "service": {
+    "profitCollateralLoanContractAddress": "0x2E691A044caed86efAd088473e366C4eBaA7aa7c"
+  }
+}

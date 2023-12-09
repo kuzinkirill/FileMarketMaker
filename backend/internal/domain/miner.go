@@ -3,17 +3,19 @@ package domain
 import (
 	"datafimaker/models"
 	"math/big"
-
-	"github.com/ethereum/go-ethereum/common"
 )
 
 type Miner struct {
-	ID                 int64
-	Address            common.Address
-	OwnerAddress       common.Address
-	WorkerAddress      common.Address
-	BeneficiaryAddress common.Address
-	CreationTimestamp  int64
+	ID                  int64
+	ActorID             int64
+	Address             string
+	AvailableBalance    *big.Int
+	OwnerAddress        string
+	WorkerAddress       string
+	BeneficiaryOwner    string
+	BeneficiaryContract string
+	LoanContract        string
+	CreationTimestamp   int64
 }
 
 type MinerStats struct {
@@ -28,12 +30,15 @@ func MinerToModel(m *Miner) *models.Miner {
 		return nil
 	}
 	return &models.Miner{
-		Address:            m.Address.String(),
-		BeneficiaryAddress: m.BeneficiaryAddress.String(),
-		CreationTimestamp:  m.CreationTimestamp,
-		ID:                 m.ID,
-		OwnerAddress:       m.OwnerAddress.String(),
-		WorkerAddress:      m.WorkerAddress.String(),
+		ActorID:             0,
+		Address:             m.Address,
+		AvailableBalance:    m.AvailableBalance.String(),
+		BeneficiaryContract: m.BeneficiaryContract,
+		BeneficiaryOwner:    m.BeneficiaryOwner,
+		CreationTimestamp:   m.CreationTimestamp,
+		LoanContract:        m.LoanContract,
+		OwnerAddress:        m.OwnerAddress,
+		WorkerAddress:       m.WorkerAddress,
 	}
 }
 

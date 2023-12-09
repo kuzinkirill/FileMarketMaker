@@ -14,6 +14,7 @@ import (
 	"syscall"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/redis/go-redis/v9"
 )
 
 func main() {
@@ -37,10 +38,18 @@ func main() {
 		log.Fatal(err)
 	}
 
-	repo := repository.NewPostgresRepository(pool)
-	service := service.New(repo)
+	rdb := redis.NewClient(&redis.Options{
+		Addr:     cfg.Redis.Addr,
+		Password: cfg.Redis.Password,
+	})
+
+	repo := repository.NewPostgresRepository(pool, rdb)
+	service := service.New(cfg.Service, repo)
 	handler := handler.New(cfg.Handler, service).Init()
 	server := server.NewServer(cfg.Server, handler)
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
 
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
@@ -48,11 +57,18 @@ func main() {
 		}
 	}()
 
-	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, syscall.SIGTERM, syscall.SIGINT)
+	log.Printf("server is listening on port %d\n", cfg.Server.Port)
+
+	go func() {
+		if err := service.ListenBlockchain(); err != nil {
+			log.Fatalf("ListenBlockchain failed: %s", err.Error())
+		}
+		quit <- syscall.SIGTERM
+	}()
 
 	<-quit
 
+	service.Shutdown()
 	if err := server.Shutdown(ctx); err != nil {
 		log.Fatal(err)
 	}

@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  backend-service:
+  data-fi-backend-service:
     image: data-fi-backend-service:latest
     ports:
       - "9202:9202"
@@ -10,39 +10,30 @@ services:
     volumes:
       - ~/logs:/logs
     restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-  data-fi-swagger:
-    image: swaggerapi/swagger-ui:latest
-    ports:
-      - "9201:8080"
-    volumes:
-      - ~/backend-swagger:/specs
-    environment:
-      - SWAGGER_JSON=/specs/swagger.yaml
   data-fi-backend-postgres:
     image: postgres:16
     volumes:
       - backend-postgres-data:/var/lib/postgresql/data
-    env_file: ~/.backend_pg_env
+    env_file: ~/.pg_env
     restart: unless-stopped
     healthcheck:
       test: pg_isready -d data_fi -U data_fi
       interval: 10s
       timeout: 5s
       retries: 5
-  backend-redis:
+  data-fi-backend-redis:
     image: redis:7
+    restart: unless-stopped
     volumes:
       - backend-redis-data:/data
     command: redis-server --save 60 1
-  backend-postgres-migration:
+  data-fi-backend-postgres-migration:
     build:
       context: .
       dockerfile: migrate.Dockerfile
-    env_file: ~/.backend_pg_env
+    env_file: ~/.pg_env
     depends_on:
-      - backend-postgres
+      - data-fi-backend-postgres
 
 volumes:
   backend-postgres-data:

@@ -8,6 +8,135 @@ schemes:
 host: localhost:9202
 basePath: /api
 paths:
+  /accounts/{address}:
+    get:
+      description: Получение информации об аккаунте
+      tags:
+        - Accounts
+      parameters:
+        - in: path
+          name: address
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Информация об аккаунте
+          schema:
+            $ref: "#/definitions/Account"
+  /deals:
+    get:
+      description: Получение списка доступных предложений
+      tags:
+        - Deals
+      responses:
+        '200':
+          description: Список предложений
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Deal"
+  /deals/{address}:
+    get:
+      description: Получение списка "своих" предложений (где акк либо майнер, либо жертва)
+      tags:
+        - Deals
+      parameters:
+        - in: path
+          name: address
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Список предложений
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Deal"
+  /deals/create:
+    post:
+      description: Создание сделки
+      tags:
+        - Deals
+      parameters:
+        - in: body
+          name: req
+          description: Транзакция
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionRequest"
+      responses:
+        '200':
+          description: Созданная сделка
+          schema:
+            $ref: "#/definitions/Deal"
+  /deals/accept:
+    post:
+      description: Принятие сделки
+      tags:
+        - Deals
+      parameters:
+        - in: body
+          name: req
+          description: Транзакция
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionRequest"
+      responses:
+        '200':
+          description: Принятая сделка
+          schema:
+            $ref: "#/definitions/Deal"
+  /deals/cancel:
+    post:
+      description: Отмена сделки
+      tags:
+        - Deals
+      parameters:
+        - in: body
+          name: req
+          description: Транзакция
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionRequest"
+      responses:
+        '200':
+          description: Отмененная сделка
+          schema:
+            $ref: "#/definitions/Deal"
+  /deals/claim:
+    post:
+      description: Клейм
+      tags:
+        - Deals
+      parameters:
+        - in: body
+          name: req
+          description: Транзакция
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionRequest"
+      responses:
+        '200':
+          description: Измененная информация о сделке
+          schema:
+            $ref: "#/definitions/Deal"
+  /miner/withdraw:
+    post:
+      description: Вывод денег майнера (если его баланс выше, чем нужно обеспечения на весь стейкинг)
+      tags:
+        - Miners
+      parameters:
+        - in: body
+          name: req
+          description: Транзакция
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionRequest"
+      responses:
+        '200':
+          description: Измененная информация о майнере
+          schema:
+            $ref: "#/definitions/Miner"
   /miners:
     get:
       produces:
@@ -15,7 +144,7 @@ paths:
       description: test
       responses:
         "200":
-          description: 200
+          description: Miners
           schema:
             $ref: '#/definitions/MinersResponse'
         default:
@@ -25,13 +154,13 @@ paths:
       parameters:
         - name: limit
           in: query
-          type: number
+          type: integer
           required: true
           format: int
         - name: offset
           in: query
           required: true
-          type: number
+          type: integer
           format: int
   /miners/with_stats/{address}:
       get:
@@ -39,7 +168,7 @@ paths:
           - application/json
         responses:
           "200":
-            description: 200
+            description: Single miner with stats
             schema:
               $ref: '#/definitions/MinerWithStats'
           default:
@@ -55,8 +184,8 @@ definitions:
   Miner:
     type: object
     properties:
-      id:
-        type: number
+      actor_id:
+        type: integer
         format: int64
       address:
         type: string
@@ -64,10 +193,20 @@ definitions:
         type: string
       workerAddress:
         type: string
-      beneficiaryAddress:
+      beneficiary_owner:
         type: string
+        description: Адрес владельца контракта бенефециара
+      loan_contract:
+        type: string
+        description: Вообще он глобальный, но конфиг вкручивать лень
+      beneficiary_contract:
+        type: string
+        description: Адрес контракта бенефициара
+      available_balance:
+        type: string
+        description: Сколько прямо сейчас денег можно стянуть с майнера
       creationTimestamp:
-        type: number
+        type: integer
         format: int64
   MinerStats:
     type: object
@@ -77,7 +216,7 @@ definitions:
       rewards:
         type: string
       blocksMined:
-        type: number
+        type: integer
         format: int64
   MinerWithStats:
     type: object
@@ -90,6 +229,71 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/Miner'
+  TransactionRequest:
+    type: object
+    properties:
+      id:
+        type: string
+        description: Хэш транзакции
+  Account:
+    type: object
+    properties:
+      address:
+        type: string
+      miner:
+        $ref: "#/definitions/Miner"
+  Deal:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: Глобальный id
+      deal_id:
+        type: integer
+        format: int64
+        description: Id сделки в рамках одного майнера (между разными майнерами могут повторяться). В контракт надо его передавать
+      miner:
+        $ref: "#/definitions/Miner"
+      giver:
+        type: string
+      status:
+        type: string
+        description: Статус сделки
+        enum:
+          - Created
+          - Accepted
+          - Finished
+          - Cancelled
+      miner_value:
+        type: string
+        description: Сумма, которую хочет получить майнер (в нативных филах с decimals 18)
+      giver_value:
+        type: string
+        description: Сумма, которую получит жертва (займодатель)  (в нативных филах с decimals 18)
+      miner_schedule:
+        description: Расписание анлока майнера
+        type: array
+        items:
+          $ref: "#/definitions/Vesting"
+      giver_schedule:
+        description: Расписание анлока жертвы
+        type: array
+        items:
+          $ref: "#/definitions/Vesting"
+  Vesting:
+    type: object
+    properties:
+      locked_until:
+        type: integer
+        format: int64
+        description: Время анлока (timestamp ms)
+      value:
+        type: string
+        description: Сумма на этап
+      received:
+        type: string
+        description: Сколько уже получено
   ErrorResponse:
     type: object
     description: Типовая ошибка

@@ -3,12 +3,15 @@
 SELECT 'up SQL query';
 -- +goose StatementEnd
 CREATE TABLE public.miners(
-    id                  BIGSERIAL NOT NULL PRIMARY KEY,
-    address             CHAR(42)  NOT NULL,
-    owner_address       CHAR(42)  NOT NULL,
-    worker_address      CHAR(42)  NOT NULL,
-    beneficiary_address CHAR(42)  NOT NULL,
-    creation_timestamp  BIGINT    NOT NULL,
+    id                   BIGSERIAL NOT NULL PRIMARY KEY,
+    actor_id             BIGSERIAL NOT NULL,
+    address              CHAR(42)  NOT NULL,
+    available_balance    CHAR(255) NOT NULL,
+    owner_address        CHAR(42)  NOT NULL,
+    worker_address       CHAR(42)  NOT NULL,
+    beneficiary_owner    CHAR(42)  NOT NULL,
+    beneficiary_contract CHAR(42)  NOT NULL,
+    creation_timestamp   BIGINT    NOT NULL,
 
     UNIQUE (address)
 );

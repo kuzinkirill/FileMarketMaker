@@ -7,66 +7,177 @@ import (
 	"math/big"
 	"strings"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/jackc/pgx/v5"
 )
 
-func (r *postgresRepository) GetMinerByAddress(ctx context.Context, tx pgx.Tx, address common.Address) (*domain.Miner, error) {
-	query := `SELECT id, address, owner_address, worker_address, beneficiary_address, creation_timestamp 
-	          FROM miners WHERE address = $1`
+func (r *postgresRepository) GetMinerByMinerID(ctx context.Context, tx pgx.Tx, minerId int64) (*domain.Miner, error) {
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
+	          FROM miners WHERE id = $1`
 
 	miner := &domain.Miner{}
-	var addr, owner, worker, benef string
+	var balance string
 	err := tx.QueryRow(ctx, query,
-		strings.ToLower(address.String()),
+		minerId,
 	).Scan(
 		&miner.ID,
-		&addr,
-		&owner,
-		&worker,
-		&benef,
+		&miner.ActorID,
+		&miner.Address,
+		&balance,
+		&miner.OwnerAddress,
+		&miner.WorkerAddress,
+		&miner.BeneficiaryOwner,
+		&miner.BeneficiaryContract,
 		&miner.CreationTimestamp,
 	)
 	if err != nil {
 		return nil, err
 	}
-	miner.Address = common.HexToAddress(addr)
-	miner.OwnerAddress = common.HexToAddress(owner)
-	miner.WorkerAddress = common.HexToAddress(worker)
-	miner.BeneficiaryAddress = common.HexToAddress(benef)
+
+	b, ok := new(big.Int).SetString(balance, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse balance: %s", balance)
+	}
+	miner.AvailableBalance = b
+
+	return miner, nil
+}
+
+func (r *postgresRepository) GetMinerByAddress(ctx context.Context, tx pgx.Tx, address string) (*domain.Miner, error) {
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
+	          FROM miners WHERE address = $1`
+
+	miner := &domain.Miner{}
+	var balance string
+	err := tx.QueryRow(ctx, query,
+		strings.ToLower(address),
+	).Scan(
+		&miner.ID,
+		&miner.ActorID,
+		&miner.Address,
+		&balance,
+		&miner.OwnerAddress,
+		&miner.WorkerAddress,
+		&miner.BeneficiaryOwner,
+		&miner.BeneficiaryContract,
+		&miner.CreationTimestamp,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	b, ok := new(big.Int).SetString(balance, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse balance: %s", balance)
+	}
+	miner.AvailableBalance = b
+
+	return miner, nil
+}
+
+func (r *postgresRepository) GetMinerByOwnerAddress(ctx context.Context, tx pgx.Tx, address string) (*domain.Miner, error) {
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
+	          FROM miners WHERE beneficiary_owner = $1`
+
+	miner := &domain.Miner{}
+	var balance string
+	err := tx.QueryRow(ctx, query,
+		strings.ToLower(address),
+	).Scan(
+		&miner.ID,
+		&miner.ActorID,
+		&miner.Address,
+		&balance,
+		&miner.OwnerAddress,
+		&miner.WorkerAddress,
+		&miner.BeneficiaryOwner,
+		&miner.BeneficiaryContract,
+		&miner.CreationTimestamp,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	b, ok := new(big.Int).SetString(balance, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse balance: %s", balance)
+	}
+	miner.AvailableBalance = b
 
 	return miner, nil
 }
 
 func (r *postgresRepository) GetMinerByID(ctx context.Context, tx pgx.Tx, id int64) (*domain.Miner, error) {
-	query := `SELECT id, address, owner_address, worker_address, beneficiary_address, creation_timestamp 
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
 	          FROM miners WHERE id = $1`
 
 	miner := &domain.Miner{}
-	var addr, owner, worker, benef string
+	var balance string
 	err := tx.QueryRow(ctx, query,
 		id,
 	).Scan(
 		&miner.ID,
-		&addr,
-		&owner,
-		&worker,
-		&benef,
+		&miner.ActorID,
+		&miner.Address,
+		&balance,
+		&miner.OwnerAddress,
+		&miner.WorkerAddress,
+		&miner.BeneficiaryOwner,
+		&miner.BeneficiaryContract,
 		&miner.CreationTimestamp,
 	)
 	if err != nil {
 		return nil, err
 	}
-	miner.Address = common.HexToAddress(addr)
-	miner.OwnerAddress = common.HexToAddress(owner)
-	miner.WorkerAddress = common.HexToAddress(worker)
-	miner.BeneficiaryAddress = common.HexToAddress(benef)
+
+	b, ok := new(big.Int).SetString(balance, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse balance: %s", balance)
+	}
+	miner.AvailableBalance = b
+
+	return miner, nil
+}
+
+func (r *postgresRepository) GetMinerByActorID(ctx context.Context, tx pgx.Tx, actorId int64) (*domain.Miner, error) {
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
+	          FROM miners WHERE actor_id = $1`
+
+	miner := &domain.Miner{}
+	var balance string
+	err := tx.QueryRow(ctx, query,
+		actorId,
+	).Scan(
+		&miner.ID,
+		&miner.ActorID,
+		&miner.Address,
+		&balance,
+		&miner.OwnerAddress,
+		&miner.WorkerAddress,
+		&miner.BeneficiaryOwner,
+		&miner.BeneficiaryContract,
+		&miner.CreationTimestamp,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	b, ok := new(big.Int).SetString(balance, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse balance: %s", balance)
+	}
+	miner.AvailableBalance = b
 
 	return miner, nil
 }
 
 func (r *postgresRepository) GetMiners(ctx context.Context, tx pgx.Tx, limit, offset int) ([]*domain.Miner, error) {
-	query := `SELECT id, address, owner_address, worker_address, beneficiary_address, creation_timestamp 
+	query := `SELECT id, actor_id, address, available_balance, owner_address, worker_address, beneficiary_owner, 
+       			beneficiary_contract, creation_timestamp
 	          FROM miners 
 	          ORDER BY id 
 	          LIMIT $1 OFFSET $2`
@@ -80,24 +191,27 @@ func (r *postgresRepository) GetMiners(ctx context.Context, tx pgx.Tx, limit, of
 	var miners []*domain.Miner
 	for rows.Next() {
 		miner := &domain.Miner{}
-		var addr, owner, worker, benef string
-
+		var balance string
 		err := rows.Scan(
 			&miner.ID,
-			&addr,
-			&owner,
-			&worker,
-			&benef,
+			&miner.ActorID,
+			&miner.Address,
+			&balance,
+			&miner.OwnerAddress,
+			&miner.WorkerAddress,
+			&miner.BeneficiaryOwner,
+			&miner.BeneficiaryContract,
 			&miner.CreationTimestamp,
 		)
 		if err != nil {
 			return nil, err
 		}
 
-		miner.Address = common.HexToAddress(addr)
-		miner.OwnerAddress = common.HexToAddress(owner)
-		miner.WorkerAddress = common.HexToAddress(worker)
-		miner.BeneficiaryAddress = common.HexToAddress(benef)
+		b, ok := new(big.Int).SetString(balance, 10)
+		if !ok {
+			return nil, fmt.Errorf("failed to parse balance: %s", balance)
+		}
+		miner.AvailableBalance = b
 
 		miners = append(miners, miner)
 	}
@@ -109,14 +223,18 @@ func (r *postgresRepository) GetMiners(ctx context.Context, tx pgx.Tx, limit, of
 }
 
 func (r *postgresRepository) InsertMiner(ctx context.Context, tx pgx.Tx, miner *domain.Miner) (int64, error) {
-	query := `INSERT INTO miners (id, address, owner_address, worker_address, beneficiary_address, creation_timestamp) 
-	          VALUES (DEFAULT, $1, $2, $3, $4, $5) RETURNING id`
+	query := `INSERT INTO miners (id, actor_id, address, available_balance, owner_address, worker_address, 
+                    beneficiary_owner, beneficiary_contract, creation_timestamp)
+	          VALUES (DEFAULT, $1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
 
 	err := tx.QueryRow(ctx, query,
-		strings.ToLower(miner.Address.String()),
-		strings.ToLower(miner.OwnerAddress.String()),
-		strings.ToLower(miner.WorkerAddress.String()),
-		strings.ToLower(miner.BeneficiaryAddress.String()),
+		miner.ActorID,
+		strings.ToLower(miner.Address),
+		miner.AvailableBalance.String(),
+		strings.ToLower(miner.OwnerAddress),
+		strings.ToLower(miner.WorkerAddress),
+		strings.ToLower(miner.BeneficiaryOwner),
+		strings.ToLower(miner.BeneficiaryContract),
 		miner.CreationTimestamp,
 	).Scan(&miner.ID)
 	if err != nil {
@@ -128,15 +246,23 @@ func (r *postgresRepository) InsertMiner(ctx context.Context, tx pgx.Tx, miner *
 
 func (r *postgresRepository) UpdateMiner(ctx context.Context, tx pgx.Tx, miner *domain.Miner) error {
 	query := `UPDATE miners SET 
-				  owner_address = $1, 
-				  worker_address = $2, 
-				  beneficiary_address = $3, 
-	          WHERE id = $4`
+				actor_id=$1, 
+				available_balance=$2, 
+				owner_address=$3, 
+				worker_address=$4, 
+                beneficiary_owner=$5, 
+                beneficiary_contract=$6, 
+                creation_timestamp=$7
+	          WHERE id = $8`
 
 	_, err := tx.Exec(ctx, query,
-		strings.ToLower(miner.OwnerAddress.String()),
-		strings.ToLower(miner.WorkerAddress.String()),
-		strings.ToLower(miner.BeneficiaryAddress.String()),
+		miner.ActorID,
+		miner.AvailableBalance.String(),
+		strings.ToLower(miner.OwnerAddress),
+		strings.ToLower(miner.WorkerAddress),
+		strings.ToLower(miner.BeneficiaryOwner),
+		strings.ToLower(miner.BeneficiaryContract),
+		miner.CreationTimestamp,
 		miner.ID,
 	)
 

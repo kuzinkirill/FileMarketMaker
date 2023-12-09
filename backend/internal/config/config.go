@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/spf13/viper"
 )
 
@@ -29,10 +30,22 @@ type (
 		Port     int
 	}
 
+	ServiceConfig struct {
+		RpcUrls                             []string
+		ProfitCollateralLoanContractAddress common.Address
+	}
+
+	RedisConfig struct {
+		Addr     string
+		Password string
+	}
+
 	Config struct {
 		Postgres *PostgresConfig
 		Server   *ServerConfig
 		Handler  *HandlerConfig
+		Service  *ServiceConfig
+		Redis    *RedisConfig
 	}
 )
 
@@ -69,6 +82,14 @@ func Init(configPath string) (*Config, error) {
 		Handler: &HandlerConfig{
 			RequestTimeout: jsonCfg.GetDuration("handler.requestTimeout"),
 			SwaggerHost:    jsonCfg.GetString("handler.swaggerHost"),
+		},
+		Redis: &RedisConfig{
+			Addr:     envCfg.GetString("REDIS_ADDRESS"),
+			Password: envCfg.GetString("REDIS_PASSWORD"),
+		},
+		Service: &ServiceConfig{
+			RpcUrls:                             envCfg.GetStringSlice("RPC_URLS"),
+			ProfitCollateralLoanContractAddress: common.HexToAddress(jsonCfg.GetString("service.profitCollateralLoanContractAddress")),
 		},
 	}, nil
 }

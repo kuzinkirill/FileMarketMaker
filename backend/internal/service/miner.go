@@ -4,9 +4,9 @@ import (
 	"context"
 	"datafimaker/internal/domain"
 	"datafimaker/models"
+	"errors"
 	"log"
 
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/jackc/pgx/v5"
 )
 
@@ -32,7 +32,7 @@ func (s *service) GetMiners(ctx context.Context, limit, offset int) ([]*models.M
 	return domain.MapSlice(miners, domain.MinerToModel), nil
 }
 
-func (s *service) GetMinerWithStatsByAddress(ctx context.Context, address common.Address) (*models.MinerWithStats, *models.ErrorResponse) {
+func (s *service) GetMinerWithStatsByAddress(ctx context.Context, address string) (*models.MinerWithStats, *models.ErrorResponse) {
 	tx, err := s.repo.BeginTx(ctx, pgx.TxOptions{})
 	if err != nil {
 		log.Println("begin tx failed: ", err)
@@ -40,7 +40,7 @@ func (s *service) GetMinerWithStatsByAddress(ctx context.Context, address common
 	}
 	defer s.repo.RollbackTx(ctx, tx)
 
-	miner, err := s.repo.GetMinerByAddress(ctx, tx, address)
+	miner, err := s.repo.GetMinerByOwnerAddress(ctx, tx, address)
 	if err != nil {
 		log.Println("failed to get miner by addr: ", err.Error())
 		return nil, internalError
@@ -60,5 +60,25 @@ func (s *service) GetMinerWithStatsByAddress(ctx context.Context, address common
 	return &models.MinerWithStats{
 		Miner: domain.MinerToModel(miner),
 		Stat:  domain.MinerStatsToModel(stat),
+	}, nil
+}
+
+func (s *service) GetAccount(ctx context.Context, address string) (*models.Account, *models.ErrorResponse) {
+	tx, err := s.repo.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		log.Println("begin tx failed: ", err)
+		return nil, internalError
+	}
+	defer s.repo.RollbackTx(ctx, tx)
+
+	miner, err := s.repo.GetMinerByOwnerAddress(ctx, tx, address)
+	if err != nil && !errors.Is(err, pgx.ErrNoRows) {
+		log.Println("failed to get miner: ", err.Error())
+		return nil, internalError
+	}
+
+	return &models.Account{
+		Address: address,
+		Miner:   domain.MinerToModel(miner),
 	}, nil
 }
