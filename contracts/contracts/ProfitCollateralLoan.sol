@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import "node_modules/@openzeppelin/contracts/utils/Context.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/utils/FilAddresses.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/SendAPI.sol";
+import "@openzeppelin/contracts/utils/Context.sol";
+import "filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
+import "filecoin-solidity-api/contracts/v0.8/utils/FilAddresses.sol";
+import "filecoin-solidity-api/contracts/v0.8/SendAPI.sol";
 import "./Beneficiary.sol";
 
 contract ProfitCollateralLoan is Context {
@@ -152,17 +152,17 @@ contract ProfitCollateralLoan is Context {
         miners[actorId].takeProfit(toPay);
     }
 
-    function replaceBeneficiary(uint64 actorId, CommonTypes.FilAddress memory newAddress) external onlyActorOwner(actorId) {
+    function replaceBeneficiary(uint64 actorId, CommonTypes.FilAddress memory newAddress, uint256 newQuota, int64 newEpoch) external onlyActorOwner(actorId) {
         require(lockedMiner[actorId] == 0, "ProfitCollateralLoan: there is locked funds for miner");
         require(lockedGiver[actorId] == 0, "ProfitCollateralLoan: there is locked funds for givers");
-        miners[actorId].changeBeneficiary(newAddress);
+        miners[actorId].changeBeneficiary(newAddress, newQuota, newEpoch);
         miners[actorId] = Beneficiary(payable(0));
     }
 
-    function replaceBeneficiaryEthAddress(uint64 actorId, address newAddress) external onlyActorOwner(actorId) {
+    function replaceBeneficiaryEthAddress(uint64 actorId, address newAddress, uint256 newQuota, int64 newEpoch) external onlyActorOwner(actorId) {
         require(lockedMiner[actorId] == 0, "ProfitCollateralLoan: there is locked funds for miner");
         require(lockedGiver[actorId] == 0, "ProfitCollateralLoan: there is locked funds for givers");
-        miners[actorId].changeBeneficiaryEthAddress(newAddress);
+        miners[actorId].changeBeneficiaryEthAddress(newAddress, newQuota, newEpoch);
         miners[actorId] = Beneficiary(payable(0));
     }
 

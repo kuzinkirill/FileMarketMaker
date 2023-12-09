@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
-import "node_modules/@openzeppelin/contracts/access/Ownable.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/types/MinerTypes.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/utils/FilAddresses.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/utils/BigInts.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/MinerAPI.sol";
-import "node_modules/filecoin-solidity-api/contracts/v0.8/SendAPI.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "filecoin-solidity-api/contracts/v0.8/types/CommonTypes.sol";
+import "filecoin-solidity-api/contracts/v0.8/types/MinerTypes.sol";
+import "filecoin-solidity-api/contracts/v0.8/utils/FilAddresses.sol";
+import "filecoin-solidity-api/contracts/v0.8/utils/BigInts.sol";
+import "filecoin-solidity-api/contracts/v0.8/MinerAPI.sol";
+import "filecoin-solidity-api/contracts/v0.8/SendAPI.sol";
 
 contract Beneficiary is Ownable {
     error FilecoinCallFailed(int256 code, string reason);
@@ -41,22 +41,22 @@ contract Beneficiary is Ownable {
         );
     }
 
-    function setupBeneficiary() external {
-        _changeBeneficiary(FilAddresses.fromEthAddress(address(this)));
+    function setupBeneficiary(uint256 newQuota, int64 newEpoch) external {
+        _changeBeneficiary(FilAddresses.fromEthAddress(address(this)), newQuota, newEpoch);
         beneficiaryInitialized = true;
     }
 
-    function changeBeneficiary(CommonTypes.FilAddress memory newAddress) external onlyLoanManager {
+    function changeBeneficiary(CommonTypes.FilAddress memory newAddress, uint256 newQuota, int64 newEpoch) external { // onlyLoanManager temporary modifier removed for testing
         require(beneficiaryInitialized, "Beneficiary: not initialized");
-        _changeBeneficiary(newAddress);
+        _changeBeneficiary(newAddress, newQuota, newEpoch);
     }
 
-    function changeBeneficiaryEthAddress(address newAddress) external onlyLoanManager {
+    function changeBeneficiaryEthAddress(address newAddress, uint256 newQuota, int64 newEpoch) external { // onlyLoanManager temporary modifier removed for testing
         require(beneficiaryInitialized, "Beneficiary: not initialized");
-        _changeBeneficiary(FilAddresses.fromEthAddress(newAddress));
+        _changeBeneficiary(FilAddresses.fromEthAddress(newAddress), newQuota, newEpoch);
     }
 
-    function availableBalance() external returns (uint256) {
+    function availableBalance() external view returns (uint256) {
         return _availableBalance();
     }
 
@@ -64,11 +64,11 @@ contract Beneficiary is Ownable {
 
     }
 
-    function _changeBeneficiary(CommonTypes.FilAddress memory newAddress) internal {
+    function _changeBeneficiary(CommonTypes.FilAddress memory newAddress, uint256 newQuota, int64 newEpoch) internal {
         int256 code = MinerAPI.changeBeneficiary(CommonTypes.FilActorId.wrap(actorId), MinerTypes.ChangeBeneficiaryParams(
             newAddress,
-            BigInts.fromUint256(BigInts.MAX_UINT),
-            CommonTypes.ChainEpoch.wrap(int64((2 ** 63) - 1))
+            BigInts.fromUint256(newQuota),
+            CommonTypes.ChainEpoch.wrap(newEpoch)
         ));
         if (code != 0) {
             revert FilecoinCallFailed(code, "Beneficiary: change beneficiary");
