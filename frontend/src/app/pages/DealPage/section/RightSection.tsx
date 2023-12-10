@@ -3,6 +3,7 @@ import { type FC } from 'react'
 
 import { type Deal } from '../../../../api/Api.ts'
 import { TableVesting } from '../../../components/App/TableVesting/TableVesting.tsx'
+import { LoanActions } from '../../../components/LoanActions/LoanActions.tsx'
 import { Flex } from '../../../UIkit'
 
 interface RightSectionProps {
@@ -15,7 +16,8 @@ export const RightSection: FC<RightSectionProps> = observer(({ deal }) => {
   return (
     <Flex flexDirection={'column'} gap={'32px'} w100>
       <TableVesting vestings={miner_schedule || []} title={'Miner Schedule'} />
-      <TableVesting vestings={giver_schedule || []} title={'Giver Schedule'} />
+      <TableVesting vestings={giver_schedule || []} title={'Investor Schedule'} />
+      <LoanActions deal={deal} />
     </Flex>
   )
 })

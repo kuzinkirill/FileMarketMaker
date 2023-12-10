@@ -8,6 +8,7 @@ import { DealsListStore } from './DealsListStore/DealsListStore.ts'
 import { DialogStore } from './Dialog/DialogStore'
 import { ErrorStore } from './Error/ErrorStore'
 import { ProfileStore } from './Profile/ProfileStore.ts'
+import { ProfileDealsStore } from './ProfileDeals/ProfileDealsStore.ts'
 
 export class RootStore {
   dialogStore: DialogStore
@@ -16,22 +17,26 @@ export class RootStore {
   dealStore: DealsStore
 
   profileStore: ProfileStore
+  profileDealsStore: ProfileDealsStore
   placeLoanStore: PlaceLoanStore
   acceptLoanStore: AcceptLoanStore
   cancelLoanStore: CancelLoanStore
   minerWithdrawStore: MinerWithdrawStore
   withdrawStore: WithdrawStore
+
   constructor() {
     this.dialogStore = new DialogStore()
     this.errorStore = new ErrorStore(this)
     this.dealsListStore = new DealsListStore(this)
     this.profileStore = new ProfileStore(this)
+    this.dealStore = new DealsStore(this)
     this.placeLoanStore = new PlaceLoanStore(this)
     this.acceptLoanStore = new AcceptLoanStore(this)
     this.cancelLoanStore = new CancelLoanStore(this)
     this.minerWithdrawStore = new MinerWithdrawStore(this)
     this.withdrawStore = new WithdrawStore(this)
     this.dealStore = new DealsStore(this)
+    this.profileDealsStore = new ProfileDealsStore(this)
   }
 }
 

@@ -10,7 +10,7 @@ export const ExplorePage = observer(() => {
 
   return (
     <PageLayout>
-      <Title>ПОДПИСЫВАЙТЕСЬ НА КАНАЛ СТАВЬТЕ ЛАЙКИ</Title>
+      <Title>Deals list</Title>
       <Loading isLoading={dealsListStore.isLoading}>
         <Stacking deals={dealsListStore.data} />
       </Loading>

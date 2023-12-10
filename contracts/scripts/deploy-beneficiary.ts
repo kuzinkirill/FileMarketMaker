@@ -1,6 +1,5 @@
 import * as hre from "hardhat";
 import {Beneficiary__factory, ProfitCollateralLoan__factory} from "../typechain-types";
-import { program } from "commander";
 
 const util = require("util");
 const request = util.promisify(require("request"));
@@ -32,26 +31,22 @@ async function callRpc(method: string, params: string) {
 }
 
 async function main() {
-    program.option("-instance, --instance <string>");
-    program.option("-beneficiary, --beneficiary <string>");
-    program.parse();
-    const args = program.opts();
+    const investManagerAddress = "0x40F7fA19A7F6f27eC690768b4D99Ff46dB1bE18E";
+    const actor = 1000;
 
     const accounts = await hre.ethers.getSigners();
-    const factory = new ProfitCollateralLoan__factory(accounts[0]);
+    console.log(accounts[0].address, actor);
+    const beneficiaryFactory = new Beneficiary__factory(accounts[0]);
 
     const priorityFee = await callRpc("eth_maxPriorityFeePerGas", "");
     console.log(priorityFee);
 
-    const instance = factory.attach(args.instance);
-    const tx = await instance.addMiner(
-        args.beneficiary, {
-            maxPriorityFeePerGas: priorityFee
-        });
-    console.log(tx.hash);
+    const beneficiary = await beneficiaryFactory.deploy(actor, investManagerAddress, accounts[0].address);
+    const beneficiaryAddress = beneficiary.address;
+    console.log(beneficiaryAddress)
 }
 
-// HARDHAT_NETWORK=filemarket ts-node scripts/add-miner.ts --instance 0x40F7fA19A7F6f27eC690768b4D99Ff46dB1bE18E --beneficiary 0x3642104624e2A6ecD33fb8ae6b410EfC022aDbE8
+// HARDHAT_NETWORK=filemarket ts-node scripts/deploy-beneficiary.ts
 
 main().catch((error) => {
     console.error(error);

@@ -25,6 +25,7 @@ export const DealPage = observer(() => {
             <LeftSection deal={data} />
             <RightSection deal={data} />
           </StyledSectionContainer>
+
         )}
       </Loading>
     </PageLayout>

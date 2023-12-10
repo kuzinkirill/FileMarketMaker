@@ -1,4 +1,5 @@
 import { Modal } from '@nextui-org/react'
+import { observer } from 'mobx-react-lite'
 import { type ReactNode } from 'react'
 
 import { styled } from '../../../styles'
@@ -21,7 +22,7 @@ type InfoModalProps = AppDialogProps<{
   header: ReactNode
 }>
 
-export function InfoModal({ open, onClose, header, body }: InfoModalProps): JSX.Element {
+export const InfoModal = observer(function InfoModal({ open, onClose, header, body }: InfoModalProps): JSX.Element {
   const { adaptive } = useMediaMui()
 
   return (
@@ -41,4 +42,4 @@ export function InfoModal({ open, onClose, header, body }: InfoModalProps): JSX.
       <InfoModalStyle>{body}</InfoModalStyle>
     </Modal>
   )
-}
+})

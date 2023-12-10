@@ -10,9 +10,10 @@ import { reduceAddress } from '../../../../utils/web3/reduceAddress.ts'
 
 interface MinerBlockProps {
   miner: Miner
+  dealStatus?: 'Created' | 'Accepted' | 'Finished' | 'Cancelled'
 }
 
-export const MinerBlock: FC<MinerBlockProps> = observer(({ miner }) => {
+export const MinerBlock: FC<MinerBlockProps> = observer(({ miner, dealStatus }) => {
   const {
     address,
     workerAddress,
@@ -25,6 +26,16 @@ export const MinerBlock: FC<MinerBlockProps> = observer(({ miner }) => {
   } = miner
 
   const list: PropertyListRowData[] = [
+    {
+      key: 'Stat',
+      label: 'Status',
+      value: (
+        <Txt primary1 style={{ wordBreak: 'break-word' }}>
+          {dealStatus}
+        </Txt>
+      ),
+      hidden: !dealStatus,
+    },
     {
       key: 'Miner address',
       label: 'Miner address',

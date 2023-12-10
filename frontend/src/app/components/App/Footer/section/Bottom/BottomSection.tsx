@@ -62,7 +62,7 @@ export const BottomSection = observer(() => {
           {' '}
           {date.getFullYear()}
           {' '}
-          GameVerify Labs Ltd.
+          FileMarket Maker Labs Ltd.
         </Txt>
         <Divider />
         <div className='links'>
@@ -73,7 +73,7 @@ export const BottomSection = observer(() => {
       <Email>
         <img src={EmailImg} />
         <Txt secondary1 css={{ fontSize: 14, fontFamily: '$body' }}>
-          info@gameverify.sl
+          fileMarket@maker.sl
         </Txt>
       </Email>
     </BottomSectionStyle>

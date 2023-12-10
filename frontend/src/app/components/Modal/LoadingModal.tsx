@@ -1,8 +1,10 @@
+import { observer } from 'mobx-react-lite'
+
 import { Modal } from '../../UIkit/Modal/Modal'
 import { type DialogProps } from '../../utils/dialog'
 import { type InProcessBodyProps, InProgressBody } from './Modal'
 
-export const LoadingModal = ({
+export const LoadingModal = observer(({
   onClose,
   open,
   text,
@@ -21,4 +23,4 @@ export const LoadingModal = ({
       <InProgressBody text={text} />
     </Modal>
   )
-}
+})

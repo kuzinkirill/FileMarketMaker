@@ -9,11 +9,11 @@ interface LeftSectionProps {
 }
 
 export const LeftSection: FC<LeftSectionProps> = observer(({ deal }) => {
-  const { miner } = deal
+  const { miner, status } = deal
 
   return (
     <div style={{ width: '100%', maxWidth: '800px' }}>
-      <MinerBlock miner={miner || {}} />
+      <MinerBlock miner={miner || {}} dealStatus={status} />
     </div>
   )
 })

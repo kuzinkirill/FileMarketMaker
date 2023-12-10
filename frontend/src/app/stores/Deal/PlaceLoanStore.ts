@@ -30,7 +30,7 @@ export class PlaceLoanStore implements StoreRequester {
   request(
     method: PlaceLoanMethod,
     form: PlaceLoanFormValues, actorId: string | number | undefined | null,
-    onSuccess?: () => void,
+    onSuccess?: (deal: Deal) => void,
     onError?: (error: unknown) => void,
   ): void {
     storeRequest(
@@ -52,11 +52,11 @@ export class PlaceLoanStore implements StoreRequester {
         })
         await getTxReceipt(res.hash)
 
-        return api.deals.createCreate({ id: res.hash })
+        return api.deals.createCreate({ id: res.hash }, { format: 'json' })
       },
       (data) => {
         this.data = data
-        onSuccess?.()
+        onSuccess?.(data)
       },
       {
         onError,

@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { gradientPlaceholderImg } from '../../../UIkit'
 import { StyledProfileImage, StyledProfileImageContent } from './ProfileImage.styles'
 
@@ -5,7 +7,7 @@ interface IProfileImageProps {
   src?: string
 }
 
-const ProfileImage = ({ src }: IProfileImageProps) => {
+const ProfileImage = observer(({ src }: IProfileImageProps) => {
   return (
     <StyledProfileImage>
 
@@ -20,6 +22,6 @@ const ProfileImage = ({ src }: IProfileImageProps) => {
       />
     </StyledProfileImage>
   )
-}
+})
 
 export default ProfileImage

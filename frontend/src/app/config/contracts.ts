@@ -2,7 +2,7 @@ import profitCollateralLoanContract from '../../abi/ProfitCollateralLoan.ts'
 
 export const contracts = {
   loan: {
-    address: '0x2E691A044caed86efAd088473e366C4eBaA7aa7c' as const,
+    address: '0x40F7fA19A7F6f27eC690768b4D99Ff46dB1bE18E' as const,
     abi: profitCollateralLoanContract.abi,
   },
 }

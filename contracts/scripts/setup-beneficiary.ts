@@ -49,6 +49,8 @@ async function main() {
     console.log(tx.hash);
 }
 
+// HARDHAT_NETWORK=filemarket ts-node scripts/setup-beneficiary.ts --instance 0x3642104624e2A6ecD33fb8ae6b410EfC022aDbE8
+
 main().catch((error) => {
     console.error(error);
     process.exitCode = 1;

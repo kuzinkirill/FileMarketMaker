@@ -20,7 +20,7 @@ import {
 } from './ProfilePage.styles'
 
 // По хорошему затянуть SVGR на проект, чтобы импортить SVG как компонент напрямую из assets
-const CopySVGIcon = () => (
+const CopySVGIcon = observer(() => (
   <svg
     width="21"
     height="20"
@@ -35,7 +35,7 @@ const CopySVGIcon = () => (
       strokeLinejoin="round"
     />
   </svg>
-)
+))
 
 const ProfilePage: React.FC = observer(() => {
   const { profileAddress } = useParams<Params>()
@@ -47,6 +47,12 @@ const ProfilePage: React.FC = observer(() => {
       label: 'MyDeals',
       url: 'owned',
       amount: 777,
+    },
+    {
+      value: 'withdraw',
+      label: 'Withdraw',
+      url: 'withdraw',
+      amount: 666,
     },
   ], [])
 

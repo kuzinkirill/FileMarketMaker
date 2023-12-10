@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 
 import { type Deal } from '../../../../../api/Api.ts'
 import { api } from '../../../../config/api.ts'
+import { type DealsStore } from '../../../../stores/Deal/DealStore.ts'
 import { type ErrorStore } from '../../../../stores/Error/ErrorStore.ts'
 import { type RootStore } from '../../../../stores/RootStore.ts'
 import { getTxReceipt } from '../../../../utils/error/contract.ts'
@@ -13,6 +14,7 @@ import { type WithdrawEthAddressMethod } from './useWithdrawEthAddress.ts'
  */
 export class WithdrawStore implements StoreRequester {
   errorStore: ErrorStore
+  dealStore: DealsStore
 
   currentRequest?: any
   requestCount: number = 0
@@ -20,8 +22,9 @@ export class WithdrawStore implements StoreRequester {
   isLoaded: boolean = false
   data: Deal | undefined = undefined
 
-  constructor({ errorStore }: RootStore) {
+  constructor({ errorStore, dealStore }: RootStore) {
     this.errorStore = errorStore
+    this.dealStore = dealStore
     makeAutoObservable(this, {
       errorStore: false,
     })
@@ -48,10 +51,11 @@ export class WithdrawStore implements StoreRequester {
         })
         await getTxReceipt(res.hash)
 
-        return api.deals.claimCreate({ id: res.hash })
+        return api.deals.claimCreate({ id: res.hash }, { format: 'json' })
       },
       (data) => {
         this.data = data
+        this.dealStore.data = data
         onSuccess?.()
       },
       { onError },

@@ -119,12 +119,14 @@ contract ProfitCollateralLoan is Context {
     function withdraw(uint64 actorId, uint256 loanId, CommonTypes.FilAddress memory receiver, uint256 value) external {
         Loan storage loan = loans[actorId][loanId];
         require(loan.minerValue != 0 || loan.giverValue != 0, "ProfitCollateralLoan: loan doesn't exist");
+        require(loan.giver != address(0), "");
         _withdraw(actorId, loanId, receiver, value);
     }
 
     function withdrawEthAddress(uint64 actorId, uint256 loanId, address receiver, uint256 value) external {
         Loan storage loan = loans[actorId][loanId];
         require(loan.minerValue != 0 || loan.giverValue != 0, "ProfitCollateralLoan: loan doesn't exist");
+        require(loan.giver != address(0), "");
         _withdraw(actorId, loanId, FilAddresses.fromEthAddress(receiver), value);
     }
 

@@ -62,7 +62,7 @@ export const CancelLoan: React.FC<CancelLoanProps> = observer(({ isMiner, deal }
         }}
       />
       {canCancel && (
-        <Button onPress={submit}>
+        <Button onPress={submit} primary fullWidth>
           Cancel
         </Button>
       )}

@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { type SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { useAccount } from 'wagmi'
 
 import { ConnectButton } from '../../../components/App/Web3'
@@ -46,7 +47,7 @@ export const CreateDealPage: React.FC = observer(() => {
   const { placeLoanStore } = useStores()
   const { profileStore, isMiner } = useProfileStoreWithUtils(address)
 
-  // const navigate = useNavigate()
+  const navigate = useNavigate()
 
   const { toBorrow, toReturn } = watch()
 
@@ -61,14 +62,14 @@ export const CreateDealPage: React.FC = observer(() => {
       method,
       data,
       actorId,
-      () => {
+      ({ id }) => {
         setModalBody(
           <SuccessOkBody
             handleClose={() => { setModalOpen(false) } }
             description="Your Loan proposal is ready!"
           />,
         )
-        // TODO: redirect to deal page
+        navigate(`/deal/${id}`)
       },
       (error) => {
         setModalOpen(true)
@@ -113,7 +114,7 @@ export const CreateDealPage: React.FC = observer(() => {
             </TitleGroup>
 
             <FormControl size={'lg'}>
-              <Label paddingL>I want to borrow</Label>
+              <Label paddingL>I want to get</Label>
               <ContentField>
                 <Input<PlaceLoanFormValues>
                   withoutDefaultBorder
@@ -153,7 +154,7 @@ export const CreateDealPage: React.FC = observer(() => {
                   withoutDefaultBorder
                   after="FIL"
                   type='number'
-                  placeholder='Includes lender reward'
+                  placeholder="Includes investor's reward"
                   controlledInputProps={{
                     name: 'toReturn',
                     setValue,
@@ -175,7 +176,7 @@ export const CreateDealPage: React.FC = observer(() => {
                     color: Number(toReturn) < Number(toBorrow) ? '$red500' : undefined,
                   }}
                 >
-                  Lenders should receive more than they lend
+                  Investors should receive more than they lend
                 </Description>
               </ContentField>
             </FormControl>
@@ -197,13 +198,13 @@ export const CreateDealPage: React.FC = observer(() => {
                     padding: '0 8px',
                   }}
                 >
-                  You could constrain yourself to make lender more comfortable
+                  You could constrain yourself to make investors more comfortable
                 </Description>
               </ContentField>
             </FormControl>
 
             <FormControl size="lg">
-              <Label>Lender will be able to claim funds after</Label>
+              <Label>Investor will be able to claim funds after</Label>
               <ContentField>
                 <DatePicker
                   control={control}

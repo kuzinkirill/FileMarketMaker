@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx'
 
 import { type Deal } from '../../../../../api/Api.ts'
 import { api } from '../../../../config/api.ts'
+import { type DealsStore } from '../../../../stores/Deal/DealStore.ts'
 import { type ErrorStore } from '../../../../stores/Error/ErrorStore.ts'
 import { type RootStore } from '../../../../stores/RootStore.ts'
 import { getTxReceipt } from '../../../../utils/error/contract.ts'
@@ -14,6 +15,7 @@ import { type AcceptLoanMethod } from './useAcceptLoan.ts'
 
 export class AcceptLoanStore implements StoreRequester {
   errorStore: ErrorStore
+  dealStore: DealsStore
 
   currentRequest?: RequestContext
   isLoaded: boolean = false
@@ -21,8 +23,9 @@ export class AcceptLoanStore implements StoreRequester {
   requestCount: number = 0
   data: Deal | undefined = undefined
 
-  constructor({ errorStore }: RootStore) {
+  constructor({ errorStore, dealStore }: RootStore) {
     this.errorStore = errorStore
+    this.dealStore = dealStore
     makeAutoObservable(this)
   }
 
@@ -39,10 +42,11 @@ export class AcceptLoanStore implements StoreRequester {
         })
         await getTxReceipt(res.hash)
 
-        return api.deals.acceptCreate({ id: res.hash })
+        return api.deals.acceptCreate({ id: res.hash }, { format: 'json' })
       },
       (data) => {
         this.data = data
+        this.dealStore.data = data
         onSuccess?.()
       },
       { onError },

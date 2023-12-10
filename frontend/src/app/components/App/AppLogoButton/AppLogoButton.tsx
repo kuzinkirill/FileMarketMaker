@@ -2,13 +2,14 @@ import { type ComponentProps, forwardRef } from 'react'
 import { type AriaButtonProps } from 'react-aria'
 import { Link } from 'react-router-dom'
 
+import LogoIcon from '../../../../assets/img/FMMakerLogoHeader.svg'
 import { type BreakpointsOptions, styled } from '../../../../styles'
-import { Drip, Txt, useButton } from '../../../UIkit'
+import { Drip, useButton } from '../../../UIkit'
 
-// const Logo = styled('img', {
-//   height: '80%',
-//   objectFit: 'contain',
-// })
+const Logo = styled('img', {
+  height: '80%',
+  objectFit: 'contain',
+})
 
 const LinkStyled = styled(Link, {
   height: '100%',
@@ -77,14 +78,10 @@ export const AppLogoButton = forwardRef<HTMLAnchorElement, AppLogoButtonProps>((
       {...buttonProps}
       ref={buttonRef}
     >
-      {/* <Logo */}
-      {/*  src={LogoIcon} */}
-      {/*  alt="FileMarket logo" */}
-      {/* /> */}
-
-      <Txt h3>СЮДА ЛОГО</Txt>
-
-      <Txt h5 style={{ color: '#512da8' }}>СЮДА ИМЯ</Txt>
+      <Logo
+        src={LogoIcon}
+        alt="FileMarket Maker logo"
+      />
       <Drip {...dripProps} />
     </LinkStyled>
   )

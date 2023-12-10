@@ -4,7 +4,10 @@ import { type FC } from 'react'
 
 import { Button } from '../../../../UIkit'
 
-export const ConnectButton: FC = observer(() => {
+export interface ConnectButtonProps {
+  fullWidth?: boolean
+}
+export const ConnectButton: FC<ConnectButtonProps> = observer(({ fullWidth }) => {
   const { openConnectModal } = useConnectModal()
 
   // onClick instead of onPress, cos web3modal closes when using onPress
@@ -13,6 +16,7 @@ export const ConnectButton: FC = observer(() => {
       small
       secondaryWithBlinds
       onClick={() => { openConnectModal?.() }}
+      fullWidth={fullWidth}
     >
       Connect
     </Button>

@@ -2,8 +2,8 @@ import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-do
 
 import { AppLayout } from '../components/App'
 import { Params } from '../utils/router'
-import { DealPage } from './DealPage/DealPage.tsx'
 import { createRoutes } from './CreatePage/routes.tsx'
+import { DealPage } from './DealPage/DealPage.tsx'
 import { ExplorePage } from './ExplorePage/ExplorePage.tsx'
 import ProfilePage from './ProfilePage/ProfilePage.tsx'
 import { profileRoutes } from './ProfilePage/sections/routes.tsx'

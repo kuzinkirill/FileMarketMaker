@@ -72,6 +72,8 @@ export const MinerWithdraw: React.FC<MinerWithdrawProps> = observer(({ miner, is
         <Button
           onPress={submit}
           disabled={amount === 0n}
+          primary
+          fullWidth
         >
           {amount === 0n ? 'No funds to withdraw' : `Withdraw ${formatEther(amount)} ${chain.nativeCurrency.symbol}`}
         </Button>
@@ -79,6 +81,8 @@ export const MinerWithdraw: React.FC<MinerWithdrawProps> = observer(({ miner, is
       {!isMiner && (
         <Button
           isDisabled
+          primary
+          fullWidth
         >
           Here miners can withdraw profits
         </Button>

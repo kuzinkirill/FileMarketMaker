@@ -18,9 +18,11 @@ export interface WithdrawProps {
 }
 
 export const Withdraw: React.FC<WithdrawProps> = observer(({ address, deal }) => {
-  const isMiner = deal.miner?.address && getAddress(address) === getAddress(deal.miner?.address)
+  const isMinerOfTheDeal = deal.miner?.beneficiary_owner &&
+    getAddress(address) === getAddress(deal.miner?.beneficiary_owner)
   const isGiver = deal.giver && getAddress(address) === getAddress(deal.giver)
   const statusFinished = deal.status === 'Finished'
+  const statusAccepted = deal.status === 'Accepted'
   const [date, setDate] = useState(new Date())
   useEffect(() => {
     const timer = setInterval(() => {
@@ -60,7 +62,7 @@ export const Withdraw: React.FC<WithdrawProps> = observer(({ address, deal }) =>
 
   const { writeAsync: method } = useWithdrawEthAddress()
 
-  const amount = isMiner ? minerAvailableToWithdraw : giverAvailableToWithdraw
+  const amount = isMinerOfTheDeal ? minerAvailableToWithdraw : (isGiver ? giverAvailableToWithdraw : 0n)
 
   const submit = () => {
     setModalOpen(true)
@@ -101,12 +103,19 @@ export const Withdraw: React.FC<WithdrawProps> = observer(({ address, deal }) =>
           setModalOpen(false)
         }}
       />
-      {(isMiner || isGiver) && statusFinished && (
+      {(isMinerOfTheDeal || isGiver) && statusAccepted && (
         <Button
           onPress={submit}
-          disabled={amount === 0n}
+          isDisabled={amount === 0n}
+          primary
+          fullWidth
         >
           {amount === 0n ? 'No funds to withdraw' : `Withdraw ${formatEther(amount)} ${chain.nativeCurrency.symbol}`}
+        </Button>
+      )}
+      {statusFinished && (
+        <Button isDisabled primary fullWidth>
+          Deal finished
         </Button>
       )}
     </>

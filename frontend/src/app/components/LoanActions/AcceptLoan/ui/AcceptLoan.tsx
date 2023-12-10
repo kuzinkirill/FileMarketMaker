@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import { getAddress } from 'viem'
 
 import { type Deal } from '../../../../../api/Api.ts'
 import { useStores } from '../../../../hooks'
@@ -15,8 +16,11 @@ export interface AcceptLoanProps {
   deal: Deal
 }
 
-export const AcceptLoan: React.FC<AcceptLoanProps> = observer(({ isMiner, deal }) => {
+export const AcceptLoan: React.FC<AcceptLoanProps> = observer(({ isMiner, deal, address }) => {
   const canAccept = !isMiner && deal.status === 'Created'
+
+  const isMinerOfTheDeal = deal.miner?.beneficiary_owner &&
+    getAddress(address) === getAddress(deal.miner?.beneficiary_owner)
 
   const { modalBody, modalOpen, setModalBody, setModalOpen } =
     useModalProperties()
@@ -32,6 +36,7 @@ export const AcceptLoan: React.FC<AcceptLoanProps> = observer(({ isMiner, deal }
       method,
       deal,
       () => {
+        console.log('succcess, set modal body')
         setModalBody(
           <SuccessOkBody
             handleClose={() => { setModalOpen(false) } }
@@ -62,13 +67,13 @@ export const AcceptLoan: React.FC<AcceptLoanProps> = observer(({ isMiner, deal }
           setModalOpen(false)
         }}
       />
-      {isMiner && (
-        <Button isDisabled>
+      {(isMiner && !isMinerOfTheDeal) && (
+        <Button isDisabled primary fullWidth>
           Miner not allowed
         </Button>
       )}
       {canAccept && (
-        <Button onPress={submit}>
+        <Button onPress={submit} primary fullWidth>
           Accept deal
         </Button>
       )}

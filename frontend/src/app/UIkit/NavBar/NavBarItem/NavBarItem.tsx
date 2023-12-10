@@ -8,7 +8,7 @@ import { Txt } from '../../Txt'
 const itemHeight = 30
 
 const navBarItemStyles = {
-  color: '#512da8',
+  color: '$blue500',
   outline: 'none',
   textDecoration: 'none',
   cursor: 'pointer',
@@ -18,18 +18,18 @@ const navBarItemStyles = {
   alignItems: 'flex-end',
   transition: 'color 0.25s ease 0s, transform 0.25s ease 0s',
   '&[data-hovered=true]': {
-    color: '#512da8',
+    color: '$blue500',
     transform: 'scale(1.03)',
   },
   '&[data-focus=true]': {
-    focusRing: '#512da8',
+    focusRing: '$blue500',
   },
   '&[data-pressed=true]': {
     opacity: 0.9,
   },
   '&[data-disabled=true]': {
-    color: '#512da8',
-    fill: '#512da8',
+    color: '$blue500',
+    fill: '$blue500',
     cursor: 'not-allowed',
   },
   '&::after': {
@@ -54,7 +54,7 @@ const navBarItemStyles = {
         pointerEvents: 'none',
         cursor: 'default',
         '&[data-hovered=true]': {
-          color: '#512da8',
+          color: '$blue500',
           transform: 'none',
         },
         '&[data-focus=true]': {
@@ -67,9 +67,9 @@ const navBarItemStyles = {
     },
     grayLight: {
       true: {
-        color: '#512da8',
+        color: '$blue500',
         '&::after': {
-          background: '#512da8',
+          background: '$blue500',
         },
       },
     },

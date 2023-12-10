@@ -101,6 +101,7 @@ export const storeRequest = <Data>(
     target,
     requester,
     action((response: HttpResponse<Data, ErrorResponse>) => {
+      console.log({ response })
       if (response.ok) {
         target.isLoaded = true
         callback(response.data)

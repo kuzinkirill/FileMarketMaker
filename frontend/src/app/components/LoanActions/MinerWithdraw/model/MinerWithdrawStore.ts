@@ -49,7 +49,7 @@ export class MinerWithdrawStore implements StoreRequester {
         })
         await getTxReceipt(res.hash)
 
-        return api.miners.withdrawCreate({ id: res.hash })
+        return api.miners.withdrawCreate({ id: res.hash }, { format: 'json' })
       },
       (data) => {
         this.data = data

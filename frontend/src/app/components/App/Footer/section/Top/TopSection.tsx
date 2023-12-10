@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import DeBankImg from '../../../../../../assets/img/DeBankImg.svg'
 import DiscordImg from '../../../../../../assets/img/DiscordImg.svg'
+import FMLogoIcon from '../../../../../../assets/img/FMMakerLogoFooter.svg'
 import InstagramImg from '../../../../../../assets/img/InstagramImg.svg'
 import LinkedinImg from '../../../../../../assets/img/LinkedinImg.svg'
 import MediumImg from '../../../../../../assets/img/MediumImg.svg'
@@ -10,7 +11,7 @@ import TelegramImg from '../../../../../../assets/img/TelegramImg.svg'
 import TwitterImg from '../../../../../../assets/img/TwitterImg.svg'
 import YoutubeImg from '../../../../../../assets/img/YoutubeImg.svg'
 import { styled } from '../../../../../../styles'
-import { textVariant, Txt } from '../../../../../UIkit'
+import { textVariant } from '../../../../../UIkit'
 
 const TopSectionStyle = styled('div', {
   '& .section': {
@@ -27,8 +28,7 @@ const TopSectionStyle = styled('div', {
   '& .first': {
     maxWidth: '360px',
     '& img': {
-      width: '100px',
-      height: '100px',
+      width: '300px',
     },
     '& h5': {
       fontWeight: '500 !important',
@@ -202,11 +202,8 @@ export const TopSection = observer(() => {
     <TopSectionStyle>
       <div className='section first'>
         <Link to={'/mainpage'}>
-          <Txt h3>СЮДА ТОЖЕ ЛОГО</Txt>
+          <img src={FMLogoIcon} />
         </Link>
-        <Text style={{ lineHeight: '24px', fontSize: '16px' }}>
-          СЮДА ОПИСАНИЕ ПРОДУКТА
-        </Text>
       </div>
       <div className='section third'>
         <HeaderText>Join our community</HeaderText>

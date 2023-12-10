@@ -29,7 +29,7 @@ export const TableVesting: FC<TableVestingProps> = observer(({ title, vestings }
           {vestings.map((item, index) => {
             return (
               <Tr key={index}>
-                <Td style={{ width: '30%' }}>{DateTime.fromMillis(item.locked_until || 0).setLocale('en-US').toLocaleString(DateTime.DATE_FULL)}</Td>
+                <Td style={{ width: '30%' }}>{DateTime.fromMillis(item.locked_until || 0).setLocale('en-US').toLocaleString(DateTime.DATETIME_SHORT_WITH_SECONDS)}</Td>
                 <Td style={{ width: '30%' }} >{formatNumber(formatEther(BigInt(item.value ?? '0')))}</Td>
                 <Td style={{ width: '30%' }} >{formatNumber(formatEther(BigInt(item.received ?? '0')))}</Td>
               </Tr>
