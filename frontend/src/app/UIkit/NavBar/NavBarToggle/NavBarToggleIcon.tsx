@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps } from 'react'
 
 import { styled } from '../../../../styles'
@@ -39,7 +40,7 @@ type NavbarToggleIconProps = ComponentProps<typeof StyledNavBarToggleIconContain
   isExpanded?: boolean
 }
 
-export const NavbarToggleIcon: React.FC<NavbarToggleIconProps> = (props) => {
+export const NavbarToggleIcon: React.FC<NavbarToggleIconProps> = observer((props) => {
   const { isExpanded = false, ...otherProps } = props
 
   return (
@@ -53,4 +54,4 @@ export const NavbarToggleIcon: React.FC<NavbarToggleIconProps> = (props) => {
       <span className="line bottom" />
     </StyledNavBarToggleIconContainer>
   )
-}
+})

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React, { type ReactNode } from 'react'
 
 import { Loading } from '../../Loading'
@@ -12,7 +13,7 @@ interface PriceBadgeProps {
   isLoading?: boolean
 }
 
-export const PriceBadge: React.FC<PriceBadgeProps> = ({
+export const PriceBadge: React.FC<PriceBadgeProps> = observer(({
   title,
   left,
   right,
@@ -39,4 +40,4 @@ export const PriceBadge: React.FC<PriceBadgeProps> = ({
       </Loading>
     </StyledWrapper>
   )
-}
+})

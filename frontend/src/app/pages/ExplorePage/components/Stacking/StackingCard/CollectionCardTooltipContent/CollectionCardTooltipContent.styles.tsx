@@ -23,7 +23,6 @@ export const CollectionCardTooltipContentStyled = styled('div', {
 export const CollectionCardSectionHeader = styled('span', {
   ...textVariant('primary2').true,
   color: '#6B6F76',
-  marginBottom: '4px',
 },
 )
 
@@ -43,4 +42,5 @@ export const CollectionCardSectionContent = styled('div', {
   display: 'flex',
   gap: '4px',
   flexWrap: 'wrap',
+  marginTop: '8px',
 })

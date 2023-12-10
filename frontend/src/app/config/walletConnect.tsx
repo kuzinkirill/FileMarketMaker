@@ -1,12 +1,11 @@
 import { getDefaultWallets } from '@rainbow-me/rainbowkit'
-import { w3mProvider } from '@web3modal/ethereum'
 import { type Chain, configureChains, createConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 
-const chain: Chain = {
-  id: 314159,
-  name: 'FilecoinTestnet',
-  network: 'Filecoin - Calibration testnet',
+export const chain: Chain = {
+  id: 31415926,
+  name: 'Local filecoin',
+  network: 'Filecoin - Local testnet',
   nativeCurrency: {
     name: 'TFIL',
     symbol: 'TFIL',
@@ -41,12 +40,12 @@ if (!projectId) {
 
 export const { chains, publicClient } = configureChains(
   [chain],
-  [w3mProvider({ projectId }), publicProvider()],
+  [publicProvider()],
   { pollingInterval: 3_000 },
 )
 
 const { connectors } = getDefaultWallets({
-  appName: 'Filemarket',
+  appName: 'FileMarketMaker',
   projectId,
   chains,
 })

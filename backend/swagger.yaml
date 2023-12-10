@@ -52,6 +52,21 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Deal"
+  /deals/by_id/{id}:
+    get:
+      description: Получение сделки по id
+      tags:
+        - Deals
+      parameters:
+        - in: path
+          name: id
+          type: string
+          required: true
+      responses:
+        '200':
+          description: Список предложений
+          schema:
+            $ref: "#/definitions/Deal"
   /deals/create:
     post:
       description: Создание сделки

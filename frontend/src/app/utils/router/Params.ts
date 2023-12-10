@@ -1,3 +1,4 @@
 export enum Params {
-  gameId = 'gameId',
+  dealId = 'dealId',
+  profileAddress = 'profileAddress',
 }

@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import EmailImg from '../../../../../../assets/img/Email.svg'
 import { styled } from '../../../../../../styles'
 import { Link, Txt } from '../../../../../UIkit'
@@ -51,7 +53,7 @@ const Email = styled('div', {
 
 const date = new Date()
 
-export const BottomSection = () => {
+export const BottomSection = observer(() => {
   return (
     <BottomSectionStyle>
       <Info>
@@ -76,4 +78,4 @@ export const BottomSection = () => {
       </Email>
     </BottomSectionStyle>
   )
-}
+})

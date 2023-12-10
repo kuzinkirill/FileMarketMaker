@@ -21,5 +21,10 @@ export const PageLayout = styled(Container, {
         },
       },
     },
+    lowH: {
+      true: {
+        minHeight: 0,
+      },
+    },
   },
 })

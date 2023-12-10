@@ -30,7 +30,7 @@ func MinerToModel(m *Miner) *models.Miner {
 		return nil
 	}
 	return &models.Miner{
-		ActorID:             0,
+		ActorID:             m.ActorID,
 		Address:             m.Address,
 		AvailableBalance:    m.AvailableBalance.String(),
 		BeneficiaryContract: m.BeneficiaryContract,

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type FC, type ReactNode } from 'react'
 
 import deleteImg from '../../../assets/img/closeButtonIcon.svg'
@@ -33,13 +34,13 @@ interface TagProps {
   value?: string
 }
 
-const Tag: FC<TagProps> = ({ tagOptions, children, value }) => {
+const Tag: FC<TagProps> = observer(({ tagOptions, children, value }) => {
   return (
     <TagStyle>
       {children}
       {tagOptions?.isCanDelete && <img src={deleteImg} onClick={() => { tagOptions?.onDelete?.(value) }} />}
     </TagStyle>
   )
-}
+})
 
 export default Tag

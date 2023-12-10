@@ -1,4 +1,5 @@
 import { Loading as LoadingNextUI } from '@nextui-org/react'
+import { observer } from 'mobx-react-lite'
 import React, { type PropsWithChildren, useMemo } from 'react'
 
 import { styled } from '../../../styles'
@@ -29,7 +30,7 @@ interface LoadingProps extends PropsWithChildren {
   isLoading: boolean
 }
 
-export const LoadingOpacity: React.FC<LoadingProps> = ({ isLoading, children }) => {
+export const LoadingOpacity: React.FC<LoadingProps> = observer(({ isLoading, children }) => {
   const LoadingChildrenElem = useMemo(() => {
     return isLoading ? LoadingChildren : React.Fragment
   }, [isLoading])
@@ -61,4 +62,4 @@ export const LoadingOpacity: React.FC<LoadingProps> = ({ isLoading, children }) 
       <LoadingChildrenElem {...loadingChildrenProps}>{children}</LoadingChildrenElem>
     </LoadingContainerElem>
   )
-}
+})

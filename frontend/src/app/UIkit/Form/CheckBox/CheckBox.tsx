@@ -1,4 +1,5 @@
 import { Checkbox as CheckBoxDefault } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type ReactNode } from 'react'
 import {
   type Control,
@@ -24,7 +25,7 @@ export type CheckBoxControlProps<T extends FieldValues> = CheckBoxProps & Compon
   children?: ReactNode
 }
 
-export const CheckBox = <T extends FieldValues>({
+export const CheckBox = observer(<T extends FieldValues>({
   after,
   errorMessage,
   controlledCheckBoxProps,
@@ -46,4 +47,4 @@ export const CheckBox = <T extends FieldValues>({
       )}
     />
   )
-}
+})

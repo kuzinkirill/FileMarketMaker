@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type FC } from 'react'
 
 import { styled } from '../../../styles'
@@ -94,7 +95,7 @@ export interface BadgeProps {
   valueStyles?: ComponentProps<typeof Value>
 }
 
-export const Badge: FC<BadgeProps> = (props) => {
+export const Badge: FC<BadgeProps> = observer((props) => {
   return (
     <Wrapper {...props.wrapperProps}>
       {props.image && (
@@ -114,4 +115,4 @@ export const Badge: FC<BadgeProps> = (props) => {
       </Content>
     </Wrapper>
   )
-}
+})

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/gorilla/mux"
@@ -27,6 +28,24 @@ func (h *handler) handleGetDealsByAddress(w http.ResponseWriter, r *http.Request
 		sendResponse(w, http.StatusBadRequest, struct{}{})
 	}
 	deal, e := h.service.GetDealsByAddress(r.Context(), addrStr)
+	if e != nil {
+		sendResponse(w, e.Code, e)
+		return
+	}
+
+	sendResponse(w, 200, deal)
+}
+
+func (h *handler) handleGetDealById(w http.ResponseWriter, r *http.Request) {
+	idStr := mux.Vars(r)["id"]
+	if idStr == "" {
+		sendResponse(w, http.StatusBadRequest, struct{}{})
+	}
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		sendResponse(w, http.StatusBadRequest, struct{}{})
+	}
+	deal, e := h.service.GetDealById(r.Context(), id)
 	if e != nil {
 		sendResponse(w, e.Code, e)
 		return

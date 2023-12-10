@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type FC, useMemo } from 'react'
 
 import { type BreakpointsOptions } from '../../../../styles'
@@ -9,7 +10,7 @@ import { paths } from './paths'
 
 const mobileBp: BreakpointsOptions = 'lg'
 
-export const AppNav: FC = () => {
+export const AppNav: FC = observer(() => {
   const { smValue, mdValue, xlValue, lgValue } = useMediaMui()
   const scrollY = useScrollWindow()
 
@@ -36,4 +37,4 @@ export const AppNav: FC = () => {
       actions={<AppConnectWidget />}
     />
   )
-}
+})

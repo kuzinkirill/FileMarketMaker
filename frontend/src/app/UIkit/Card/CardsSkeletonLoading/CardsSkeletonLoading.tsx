@@ -1,4 +1,5 @@
 import { Skeleton } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 import React, { type PropsWithChildren } from 'react'
 
 interface CardsSkeletonLoadingProps extends PropsWithChildren {
@@ -6,7 +7,7 @@ interface CardsSkeletonLoadingProps extends PropsWithChildren {
   isLoading: boolean
 }
 
-export const CardsSkeletonLoading: React.FC<CardsSkeletonLoadingProps> = ({ count, isLoading, children }) => {
+export const CardsSkeletonLoading: React.FC<CardsSkeletonLoadingProps> = observer(({ count, isLoading, children }) => {
   if (isLoading) {
     return (
       <>
@@ -24,4 +25,4 @@ export const CardsSkeletonLoading: React.FC<CardsSkeletonLoadingProps> = ({ coun
   }
 
   return <>{children}</>
-}
+})

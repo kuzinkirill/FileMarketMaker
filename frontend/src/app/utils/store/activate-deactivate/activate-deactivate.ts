@@ -3,8 +3,8 @@
  * инициализацию (активацию) и деактивацию
  */
 
-export interface ActivateDeactivate {
-  activate: (...args: unknown[]) => void // вызывается перед использованием стора
+export interface ActivateDeactivate<Args extends any[] = any[]> {
+  activate: (...args: Args) => void // вызывается перед использованием стора
   deactivate: () => void // вызывается после окончания использования стора
 
   isActivated: boolean

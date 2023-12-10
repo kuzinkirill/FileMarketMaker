@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { styled } from '../../../../../styles'
 
 const SettingCheckBoxIconStyled = styled('div', {
@@ -11,11 +13,11 @@ const SettingCheckBoxIconStyled = styled('div', {
   },
 })
 
-export const SettingCheckBoxIcon = () => {
+export const SettingCheckBoxIcon = observer(() => {
   return (
     <SettingCheckBoxIconStyled />
   )
-}
+})
 
 const SettingCheckBoxIconActiveStyled = styled('div', {
   borderRadius: '8px',
@@ -28,7 +30,7 @@ const SettingCheckBoxIconActiveStyled = styled('div', {
   justifyContent: 'center',
 })
 
-export const SettingCheckBoxActiveIcon = () => {
+export const SettingCheckBoxActiveIcon = observer(() => {
   return (
     <SettingCheckBoxIconActiveStyled>
       <svg
@@ -47,4 +49,4 @@ export const SettingCheckBoxActiveIcon = () => {
       </svg>
     </SettingCheckBoxIconActiveStyled>
   )
-}
+})

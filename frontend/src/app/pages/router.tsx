@@ -1,12 +1,30 @@
 import { createBrowserRouter, Navigate, type RouteObject } from 'react-router-dom'
 
 import { AppLayout } from '../components/App'
+import { Params } from '../utils/router'
+import { DealPage } from './DealPage/DealPage.tsx'
+import { createRoutes } from './CreatePage/routes.tsx'
 import { ExplorePage } from './ExplorePage/ExplorePage.tsx'
+import ProfilePage from './ProfilePage/ProfilePage.tsx'
+import { profileRoutes } from './ProfilePage/sections/routes.tsx'
 
 const routes: RouteObject[] = [
   {
     path: '/',
     element: <ExplorePage />,
+  },
+  {
+    path: `/deal/:${Params.dealId}`,
+    element: <DealPage />,
+  },
+  {
+    path: `profile/:${Params.profileAddress}`,
+    element: <ProfilePage />,
+    children: profileRoutes,
+  },
+  {
+    path: 'create',
+    children: createRoutes,
   },
   {
     path: '*',

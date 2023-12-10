@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type FC } from 'react'
 
 import { styled } from '../../../../styles'
@@ -44,7 +45,7 @@ const StyledContent = styled('div', {
   paddingBottom: '$layout$navBarHeight',
 })
 
-export const NavBarCollapse: FC<NavBarCollapseProps> = ({ children, isOpen, isTransparent }) => {
+export const NavBarCollapse: FC<NavBarCollapseProps> = observer(({ children, isOpen, isTransparent }) => {
   return (
     <StyledNavBarCollapse
       isOpen={isOpen}
@@ -59,4 +60,4 @@ export const NavBarCollapse: FC<NavBarCollapseProps> = ({ children, isOpen, isTr
       </StyledScrollContainer>
     </StyledNavBarCollapse>
   )
-}
+})

@@ -1,6 +1,8 @@
 import { Slide, ThemeProvider, Tooltip } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 import { useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { formatEther } from 'viem'
 
 import { type Deal } from '../../../../../../api/Api.ts'
 import { useMediaMui } from '../../../../../hooks'
@@ -15,7 +17,7 @@ import {
   theme,
 } from './DealCard.styles.ts'
 
-export default function DealCard({
+export const DealCard = observer(function DealCard({
   id,
   giver_schedule,
   giver_value,
@@ -43,15 +45,15 @@ export default function DealCard({
       onMouseUp={() => { setIsShowNumber(false) }}
       onClick={(e) => {
         e.preventDefault()
-        navigate(`/miner/${id}`)
+        navigate(`/deal/${id}`)
       }}
     >
       <StyledCollectionGrid>
         <InsideContainer>
           <CollectionCardText>{miner?.beneficiary_owner}</CollectionCardText>
         </InsideContainer>
-        <CollectionCardText>{isShowNumber ? miner_value : cutNumber(miner_value)}</CollectionCardText>
-        <CollectionCardText>{isShowNumber ? giver_value : cutNumber(giver_value)}</CollectionCardText>
+        <CollectionCardText>{isShowNumber ? formatEther(BigInt(miner_value ?? '0')) : cutNumber(formatEther(BigInt(miner_value ?? '0')))}</CollectionCardText>
+        <CollectionCardText>{isShowNumber ? formatEther(BigInt(giver_value ?? '0')) : cutNumber(formatEther(BigInt(giver_value ?? '0')))}</CollectionCardText>
         <CollectionCardTypesText>{status}</CollectionCardTypesText>
         <ThemeProvider theme={theme}>
           <Tooltip
@@ -89,4 +91,4 @@ export default function DealCard({
       </StyledCollectionGrid>
     </StyledCollectionCard>
   )
-}
+})

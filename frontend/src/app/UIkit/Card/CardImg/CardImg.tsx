@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import React, { type PropsWithChildren } from 'react'
 
 import { gradientPlaceholderImg } from '../../Placeholder'
@@ -8,7 +9,7 @@ interface CardImgProps extends PropsWithChildren {
   variant?: 'primary' | 'secondary'
 }
 
-export const CardImg: React.FC<CardImgProps> = ({ children, src, variant = 'primary' }) => {
+export const CardImg: React.FC<CardImgProps> = observer(({ children, src, variant = 'primary' }) => {
   return (
     <StyledImgRoot variant={variant}>
       <StyledImgWrapper variant={variant}>
@@ -25,4 +26,4 @@ export const CardImg: React.FC<CardImgProps> = ({ children, src, variant = 'prim
       </StyledImgWrapper>
     </StyledImgRoot>
   )
-}
+})

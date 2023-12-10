@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type FC, useMemo } from 'react'
 
 import { NavLinkStyled } from '../NavBarItem'
@@ -12,7 +13,7 @@ type NavBarCollapseItemProps = ComponentProps<typeof NavLinkStyled> & {
   isVisible?: boolean // for animation purposes
 }
 
-export const NavBarCollapseItem: FC<NavBarCollapseItemProps> = ({
+export const NavBarCollapseItem: FC<NavBarCollapseItemProps> = observer(({
   index,
   length,
   isVisible,
@@ -40,4 +41,4 @@ export const NavBarCollapseItem: FC<NavBarCollapseItemProps> = ({
       {children}
     </NavLinkStyled>
   )
-}
+})

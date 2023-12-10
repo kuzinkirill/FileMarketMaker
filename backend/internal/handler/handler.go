@@ -38,6 +38,7 @@ func (h *handler) Init() http.Handler {
 	router.HandleFunc("/deals/claim", h.handleClaimDeal)
 	router.HandleFunc("/deals/cancel", h.handleCancelDeal)
 	router.HandleFunc("/deals/{address}", h.handleGetDealsByAddress)
+	router.HandleFunc("/deals/by_id/{id}", h.handleGetDealById)
 	router.HandleFunc("/deals", h.handleGetDeals)
 
 	router.Use(h.corsMiddleware)

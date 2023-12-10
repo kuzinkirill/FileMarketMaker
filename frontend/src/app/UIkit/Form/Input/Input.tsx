@@ -1,4 +1,5 @@
 import { type ComponentProps } from '@stitches/react'
+import { observer } from 'mobx-react-lite'
 import { type ReactNode, useState } from 'react'
 import {
   type Control,
@@ -40,7 +41,7 @@ export type InputControlProps<T extends FieldValues> = InputProps & {
   rightInputContent?: ReactNode
 }
 
-export const Input = <T extends FieldValues>({
+export const Input = observer(<T extends FieldValues>({
   after,
   errorMessage,
   controlledInputProps,
@@ -97,4 +98,4 @@ export const Input = <T extends FieldValues>({
       )}
     />
   )
-}
+})

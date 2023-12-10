@@ -41,7 +41,6 @@ func DealToModel(d *Deal, miner *Miner) *models.Deal {
 	if d == nil {
 		return nil
 	}
-
 	return &models.Deal{
 		DealID:        d.DealID,
 		GiverSchedule: MapSlice(d.GiverVestings, VestingToModel),

@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type FC, type ReactNode, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 
@@ -76,7 +77,7 @@ const NavBarVerticalSpacer = styled('div', {
 })
 const itemTo = (item: NavBarItemData) =>
   item.isMock ? '/capibebra1337' : item.to
-export const NavBar: FC<NavBarProps> = ({
+export const NavBar: FC<NavBarProps> = observer(({
   brand,
   items,
   actions,
@@ -161,4 +162,4 @@ export const NavBar: FC<NavBarProps> = ({
       )}
     </>
   )
-}
+})

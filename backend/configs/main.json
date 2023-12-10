@@ -6,7 +6,7 @@
     "maxHeaderBytes": 1024
   },
   "handler": {
-    "requestTimeout": "5s",
+    "requestTimeout": "15s",
     "swaggerHost": "*"
   },
   "service": {

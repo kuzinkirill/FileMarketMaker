@@ -45,6 +45,41 @@ func (r *postgresRepository) GetDeal(ctx context.Context, tx pgx.Tx, minerId int
 	return deal, nil
 }
 
+func (r *postgresRepository) GetDealById(ctx context.Context, tx pgx.Tx, id int64) (*domain.Deal, error) {
+	query := `SELECT id, deal_id, miner_id, status, miner_value, giver_value, COALESCE(giver_address, '') 
+			  FROM deals
+			  WHERE id=$1`
+
+	var minerValue, giverValue string
+	var deal = &domain.Deal{}
+	err := tx.
+		QueryRow(ctx, query, id).
+		Scan(
+			&deal.ID,
+			&deal.DealID,
+			&deal.MinerID,
+			&deal.Status,
+			&minerValue,
+			&giverValue,
+			&deal.Giver,
+		)
+	if err != nil {
+		return nil, err
+	}
+
+	var ok bool
+	deal.MinerValue, ok = new(big.Int).SetString(minerValue, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse miner value")
+	}
+	deal.GiverValue, ok = new(big.Int).SetString(giverValue, 10)
+	if !ok {
+		return nil, fmt.Errorf("failed to parse giver value")
+	}
+
+	return deal, nil
+}
+
 func (r *postgresRepository) GetDealVestings(ctx context.Context, tx pgx.Tx, dealId int64) ([]*domain.Vesting, []*domain.Vesting, error) {
 	query := `SELECT locked_until,value,received FROM miner_vestings WHERE deal_id=$1 ORDER BY locked_until`
 

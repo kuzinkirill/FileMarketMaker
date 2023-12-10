@@ -1,4 +1,5 @@
 import { type CSS } from '@stitches/react'
+import { observer } from 'mobx-react-lite'
 import React, { type PropsWithChildren } from 'react'
 
 import { StyledDiv } from './Flex.styles'
@@ -16,7 +17,7 @@ interface FlexProps extends PropsWithChildren {
   className?: string
 }
 
-export const Flex: React.FC<FlexProps> = ({ children, h100, w100, css, className, ...props }) => {
+export const Flex: React.FC<FlexProps> = observer(({ children, h100, w100, css, className, ...props }) => {
   return (
     <StyledDiv
       className={className}
@@ -30,4 +31,4 @@ export const Flex: React.FC<FlexProps> = ({ children, h100, w100, css, className
       {children}
     </StyledDiv>
   )
-}
+})

@@ -1,4 +1,5 @@
 import { type ComponentProps } from '@stitches/react'
+import { observer } from 'mobx-react-lite'
 import {
   type Control,
   Controller, type FieldValues, type Path,
@@ -26,7 +27,7 @@ export type TextAreaControlProps<T extends FieldValues> = TextAreaProps & {
   after?: string
 }
 
-export const TextArea = <T extends FieldValues>({
+export const TextArea = observer(<T extends FieldValues>({
   after,
   errorMessage,
   controlledInputProps,
@@ -57,4 +58,4 @@ export const TextArea = <T extends FieldValues>({
       )}
     />
   )
-}
+})

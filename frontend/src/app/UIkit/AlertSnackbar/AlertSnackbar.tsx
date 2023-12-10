@@ -1,6 +1,8 @@
 import { Alert, type AlertColor, AlertTitle, Box, IconButton, Snackbar } from '@mui/material'
+import { observer } from 'mobx-react-lite'
 import React from 'react'
 
+import { HackMuiThemeProvider } from '../../config/HackMuiThemeProvider.tsx'
 import { type AppDialogProps } from '../../utils/dialog'
 
 export interface AlertSnackbarParams {
@@ -13,7 +15,7 @@ export interface AlertSnackbarParams {
 
 export type AlertSnackbarProps = AppDialogProps<AlertSnackbarParams>
 
-export function AlertSnackbar(
+export const AlertSnackbar = observer(function AlertSnackbar(
   {
     severity,
     title,
@@ -25,49 +27,51 @@ export function AlertSnackbar(
   }: AlertSnackbarProps,
 ): JSX.Element {
   return (
-    <Snackbar
-      open={open}
-      autoHideDuration={duration}
-      onClose={onClose}
-    >
-      <Alert
-        severity={severity}
-        sx={{
-          width: '100%',
-        }}
-        action={
-          action && (
-            <Box
-              sx={{
-                display: 'grid',
-                gridAutoRows: 'auto',
-                gridTemplateRows: '1fr',
-                gridAutoFlow: 'column',
-                gap: 1,
-              }}
-              onClick={onClose}
-            >
-              {action}
-              <IconButton
-                color="inherit"
-                size="small"
-                onClick={onClose}
-              >
-                <i className="ti ti-close" />
-              </IconButton>
-            </Box>
-          )
-        }
+    <HackMuiThemeProvider>
+      <Snackbar
+        open={open}
+        autoHideDuration={duration}
         onClose={onClose}
       >
-        {
-          title
-            ? (<AlertTitle>{title}</AlertTitle>)
-            : null
-        }
+        <Alert
+          severity={severity}
+          sx={{
+            width: '100%',
+          }}
+          action={
+            action && (
+              <Box
+                sx={{
+                  display: 'grid',
+                  gridAutoRows: 'auto',
+                  gridTemplateRows: '1fr',
+                  gridAutoFlow: 'column',
+                  gap: 1,
+                }}
+                onClick={onClose}
+              >
+                {action}
+                <IconButton
+                  color="inherit"
+                  size="small"
+                  onClick={onClose}
+                >
+                  <i className="ti ti-close" />
+                </IconButton>
+              </Box>
+            )
+          }
+          onClose={onClose}
+        >
+          {
+            title
+              ? (<AlertTitle>{title}</AlertTitle>)
+              : null
+          }
 
-        {body}
-      </Alert>
-    </Snackbar>
+          {body}
+        </Alert>
+      </Snackbar>
+    </HackMuiThemeProvider>
   )
-}
+})

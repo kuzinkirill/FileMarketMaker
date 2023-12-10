@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { Link } from 'react-router-dom'
 
 import DeBankImg from '../../../../../../assets/img/DeBankImg.svg'
@@ -196,7 +197,7 @@ export const Cards: Array<{
   },
 ]
 
-export const TopSection = () => {
+export const TopSection = observer(() => {
   return (
     <TopSectionStyle>
       <div className='section first'>
@@ -220,4 +221,4 @@ export const TopSection = () => {
       </div>
     </TopSectionStyle>
   )
-}
+})

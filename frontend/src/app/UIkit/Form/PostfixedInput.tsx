@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type ReactNode } from 'react'
 
 import { styled } from '../../../styles'
@@ -54,7 +55,7 @@ interface PrefixedInputProps {
   postfixProps?: ComponentProps<typeof InputPostfix>
 }
 
-export default function PostfixedInput(props: PrefixedInputProps) {
+export const PostfixedInput = observer(function PostfixedInput(props: PrefixedInputProps) {
   return (
     <InputWithPrefix isDisabledFocusStyle withoutDefaultBorder>
       <Input
@@ -64,4 +65,4 @@ export default function PostfixedInput(props: PrefixedInputProps) {
       <InputPostfix {...props.postfixProps}>{props.postfix}</InputPostfix>
     </InputWithPrefix>
   )
-}
+})

@@ -25,8 +25,7 @@ export const useActivatedStore = <StoreName extends keyof AllowedStores, Store e
     if (!args.every((arg) => arg !== undefined) || store.isActivated) return
 
     activated.current = true
-    // ts говорит, что args не имеют тип tuple, но args выведены как аргументы функции и не могут быть не tuple
-    // @ts-expect-error
+    // @ts-expect-error args выведены как аргументы функции и не могут быть не tuple
     store.activate(...args)
 
     return () => {

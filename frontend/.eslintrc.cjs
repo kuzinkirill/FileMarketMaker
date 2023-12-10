@@ -15,7 +15,7 @@ module.exports = {
     sourceType: 'module',
     project: 'tsconfig.json'
   },
-  plugins: ['react', 'simple-import-sort', 'unused-imports'],
+  plugins: ['react', 'simple-import-sort', 'unused-imports', 'mobx'],
   rules: {
     // imports
     'simple-import-sort/imports': 'warn',
@@ -90,6 +90,11 @@ module.exports = {
       "component": true,
       "html": true
     }],
+
+    // mobx
+    "mobx/unconditional-make-observable": "error",
+    "mobx/missing-make-observable": "error",
+    "mobx/missing-observer": "warn",
 
     // other
     'no-use-before-define': 'off',

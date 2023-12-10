@@ -1,3 +1,5 @@
+import { observer } from 'mobx-react-lite'
+
 import { styled } from '../../../../styles'
 import { Container } from '../../../UIkit'
 import { BottomSection, TopSection } from './section'
@@ -39,7 +41,7 @@ const Line = styled('div', {
   },
 })
 
-export default function Footer() {
+export const Footer = observer(function Footer() {
   return (
     <FooterWrapper>
       <FooterContainer>
@@ -49,4 +51,4 @@ export default function Footer() {
       </FooterContainer>
     </FooterWrapper>
   )
-}
+})

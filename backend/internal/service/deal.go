@@ -78,3 +78,65 @@ func (s *service) GetDealsByAddress(ctx context.Context, address string) ([]*mod
 
 	return res, nil
 }
+
+func (s *service) GetDealById(ctx context.Context, id int64) (*models.Deal, *models.ErrorResponse) {
+	tx, err := s.repo.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		log.Println("begin tx failed: ", err)
+		return nil, internalError
+	}
+	defer s.repo.RollbackTx(ctx, tx)
+
+	deal, err := s.repo.GetDealById(ctx, tx, id)
+	if err != nil {
+		log.Println("failed to get deal: ", err)
+		return nil, internalError
+	}
+
+	minerVestings, giverVestings, err := s.repo.GetDealVestings(ctx, tx, deal.ID)
+	if err != nil {
+		log.Println(err)
+		return nil, internalError
+	}
+
+	miner, err := s.repo.GetMinerByMinerID(ctx, tx, deal.MinerID)
+	if err != nil {
+		log.Println(err)
+		return nil, internalError
+	}
+
+	deal.MinerVestings, deal.GiverVestings = minerVestings, giverVestings
+	res := domain.DealToModel(deal, miner)
+	return res, nil
+}
+
+func (s *service) GetDealByMinerIdAndDealId(ctx context.Context, minerId int64, dealId int64) (*models.Deal, *models.ErrorResponse) {
+	tx, err := s.repo.BeginTx(ctx, pgx.TxOptions{})
+	if err != nil {
+		log.Println("begin tx failed: ", err)
+		return nil, internalError
+	}
+	defer s.repo.RollbackTx(ctx, tx)
+
+	deal, err := s.repo.GetDeal(ctx, tx, minerId, dealId)
+	if err != nil {
+		log.Println("failed to get deal: ", err)
+		return nil, internalError
+	}
+
+	minerVestings, giverVestings, err := s.repo.GetDealVestings(ctx, tx, deal.ID)
+	if err != nil {
+		log.Println(err)
+		return nil, internalError
+	}
+
+	miner, err := s.repo.GetMinerByMinerID(ctx, tx, deal.MinerID)
+	if err != nil {
+		log.Println(err)
+		return nil, internalError
+	}
+
+	deal.MinerVestings, deal.GiverVestings = minerVestings, giverVestings
+	res := domain.DealToModel(deal, miner)
+	return res, nil
+}

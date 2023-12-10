@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type FC } from 'react'
 import { useDisconnect } from 'wagmi'
 
@@ -7,7 +8,7 @@ export interface DisconnectButtonProps {
   onPress?: () => void
 }
 
-export const DisconnectButton: FC<DisconnectButtonProps> = ({ onPress }) => {
+export const DisconnectButton: FC<DisconnectButtonProps> = observer(({ onPress }) => {
   const { disconnect } = useDisconnect()
 
   return (
@@ -24,4 +25,4 @@ export const DisconnectButton: FC<DisconnectButtonProps> = ({ onPress }) => {
       Disconnect
     </Link>
   )
-}
+})

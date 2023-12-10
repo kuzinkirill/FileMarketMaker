@@ -17,8 +17,8 @@ import (
 )
 
 func (s *service) getTxLogs(ctx context.Context, hash string) ([]*types.Log, error) {
-	for i := 0; i < 30; i++ {
-		time.Sleep(200 * time.Millisecond)
+	for i := 0; i < 50; i++ {
+		time.Sleep(300 * time.Millisecond)
 		rec, err := s.ethClient.TransactionReceipt(ctx, common.HexToHash(hash))
 		if err != nil {
 			log.Println("get tx logs failed", hash, err)

@@ -26,6 +26,7 @@ type Miner interface {
 
 type Deal interface {
 	GetDeal(ctx context.Context, tx pgx.Tx, actorId int64, dealId int64) (*domain.Deal, error)
+	GetDealById(ctx context.Context, tx pgx.Tx, id int64) (*domain.Deal, error)
 	GetDeals(ctx context.Context, tx pgx.Tx) ([]*domain.Deal, error)
 	GetDealsByAddress(ctx context.Context, tx pgx.Tx, address string) ([]*domain.Deal, error)
 	GetDealVestings(ctx context.Context, tx pgx.Tx, dealId int64) ([]*domain.Vesting, []*domain.Vesting, error)

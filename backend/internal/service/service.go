@@ -32,6 +32,7 @@ type Service interface {
 	GetAccount(ctx context.Context, address string) (*models.Account, *models.ErrorResponse)
 
 	GetDeals(ctx context.Context) ([]*models.Deal, *models.ErrorResponse)
+	GetDealById(ctx context.Context, id int64) (*models.Deal, *models.ErrorResponse)
 	GetDealsByAddress(ctx context.Context, address string) ([]*models.Deal, *models.ErrorResponse)
 
 	CreateDeal(ctx context.Context, txId string) (*models.Deal, *models.ErrorResponse)

@@ -1,4 +1,5 @@
 import { type PressEvent } from '@react-types/shared/src/events'
+import { observer } from 'mobx-react-lite'
 import { type FC } from 'react'
 
 import { NavLink } from '../../../UIkit'
@@ -8,7 +9,7 @@ export interface AccountButtonProps {
   onPress?: (e: PressEvent) => void
 }
 
-export const AccountButton: FC<AccountButtonProps> = ({ address, onPress }) => {
+export const AccountButton: FC<AccountButtonProps> = observer(({ address, onPress }) => {
   return (
     <NavLink
       to={`/profile/${address}`}
@@ -17,4 +18,4 @@ export const AccountButton: FC<AccountButtonProps> = ({ address, onPress }) => {
       View account
     </NavLink>
   )
-}
+})

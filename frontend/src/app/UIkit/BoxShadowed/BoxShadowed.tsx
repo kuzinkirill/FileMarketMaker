@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps, type ReactNode } from 'react'
 
 import { styled } from '../../../styles'
@@ -98,7 +99,7 @@ const BoxContent = styled('div', {
   },
 })
 
-const BoxShadowed = (props: BoxShadowedProps & ComponentProps<typeof BoxContent> & ComponentProps<typeof Box>) => {
+const BoxShadowed = observer((props: BoxShadowedProps & ComponentProps<typeof BoxContent> & ComponentProps<typeof Box>) => {
   return (
     <Box
       widthInherit={props.widthInherit}
@@ -109,6 +110,6 @@ const BoxShadowed = (props: BoxShadowedProps & ComponentProps<typeof BoxContent>
       <BoxContent hoverBlue={props.hoverBlue} fullHeight={props.fullHeight} >{props.children}</BoxContent>
     </Box>
   )
-}
+})
 
 export default BoxShadowed

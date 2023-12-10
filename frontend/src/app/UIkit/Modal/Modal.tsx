@@ -1,11 +1,11 @@
 import { Modal as ModalBase } from '@nextui-org/react'
+import { observer } from 'mobx-react-lite'
 import { type ComponentProps } from 'react'
 
 import CloseButtonImg from '../../../assets/img/CloseButton.svg'
 import FWIconImg from '../../../assets/img/FWicon.svg'
 import { styled } from '../../../styles'
 import { useMediaMui } from '../../hooks'
-import FileBunniesLogo from '../../pages/MarketPage/img/FileBunniesLogoModal.svg'
 import { FormControl } from '../Form'
 import { textVariant } from '../Txt'
 
@@ -33,15 +33,6 @@ export const ModalIcon = styled('div', {
   width: '100%',
   backgroundSize: 'contain',
   backgroundRepeat: 'no-repeat',
-  variants: {
-    fileBunnies: {
-      true: {
-        background: `url(${FileBunniesLogo}) no-repeat`,
-        height: '50px',
-        top: '-6px',
-      },
-    },
-  },
 })
 
 export const modalStyle = {
@@ -65,7 +56,7 @@ export const FormControlModal = styled(FormControl, {
   maxWidth: 'inherit',
 })
 
-export const Modal = (props: ComponentProps<typeof ModalBase> & { isError?: boolean }) => {
+export const Modal = observer((props: ComponentProps<typeof ModalBase> & { isError?: boolean }) => {
   const { adaptive } = useMediaMui()
   const { isError, width, ...modalProps } = props
 
@@ -97,7 +88,7 @@ export const Modal = (props: ComponentProps<typeof ModalBase> & { isError?: bool
       )}
     </ModalBase>
   )
-}
+})
 
 export const ModalBody = styled('div', {
   paddingTB: '40px',
